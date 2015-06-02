@@ -1,0 +1,253 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>vizardous</groupId>
+    <artifactId>vizardous</artifactId>
+    <version>1.1.0</version>
+    <packaging>jar</packaging>
+
+    <name>Vizardous</name>
+    <url>http://github.com/modsim/vizardous</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+  
+    <repositories>
+        <repository>
+            <id>imagej.public</id>
+            <url>http://maven.imagej.net/content/groups/public</url>
+        </repository>
+        <repository>
+            <id>central</id>
+            <url>http://repo1.maven.org/maven/</url>
+        </repository>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+    </repositories>
+
+    <dependencies>
+		<dependency>
+		    <groupId>com.github.jgraph</groupId>
+		    <artifactId>jgraphx</artifactId>
+		    <version>v3.3.0.0</version>
+		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+    		<groupId>org.hamcrest</groupId>
+    		<artifactId>hamcrest-junit</artifactId>
+    		<version>1.0.0.0</version>
+    		<type>jar</type>
+		</dependency>
+        
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.0.15</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jcommon</artifactId>
+            <type>jar</type>
+            <version>1.0.17</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-svggen</artifactId>
+            <version>1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-codec</artifactId>
+            <version>1.7</version>
+        </dependency>
+		<dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-dom</artifactId>
+            <version>1.7</version>
+            <type>jar</type>
+        </dependency>    
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-swing</artifactId>
+            <version>1.7</version>
+            <type>jar</type>
+        </dependency>       
+        
+        <dependency>
+            <groupId>org.freehep</groupId>
+            <artifactId>freehep-graphicsio-svg</artifactId>
+            <version>2.3</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.0.6</version>
+        </dependency>
+        
+        <!-- XLS(S) handling -->
+        <dependency>
+            <groupId>net.sourceforge.jexcelapi</groupId>
+            <artifactId>jxl</artifactId>
+            <version>2.6.12</version>
+        </dependency>          
+        
+        <!-- CSV handling -->
+        <dependency>
+            <groupId>net.sf.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>2.3</version>
+        </dependency>
+        
+        <!-- OMERO -->
+        <dependency>
+            <groupId>ome</groupId>
+            <artifactId>omero-client</artifactId>
+            <version>5.0.0-beta1-256-019d14a-ice34-b3523</version>
+            <type>jar</type>
+        </dependency>
+
+		<!-- Misc -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>3.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+
+		<!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.7</version>
+        </dependency>
+        <dependency> 
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.7</version>
+        </dependency>     
+        
+        <!-- JUNG -->
+        <dependency>
+            <groupId>net.sf.jung</groupId>
+            <artifactId>jung-algorithms</artifactId>
+            <version>2.0.1</version>
+            <type>jar</type>
+        </dependency>        
+        <dependency>
+            <groupId>net.sf.jung</groupId>
+            <artifactId>jung-visualization</artifactId>
+            <version>2.0.1</version>
+            <type>jar</type>
+        </dependency>        
+        <dependency>
+            <groupId>net.sf.jung</groupId>
+            <artifactId>jung-graph-impl</artifactId>
+            <version>2.0.1</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jung</groupId>
+            <artifactId>jung-io</artifactId>
+            <version>2.0.1</version>
+            <type>jar</type>
+        </dependency>
+        
+        <!-- XML Parsing -->
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom2</artifactId>
+            <version>2.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+            <version>1.1.6</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <compilerArguments>
+                        <verbose />
+                        <bootclasspath>${java.home}${file.separator}lib${file.separator}rt.jar</bootclasspath>
+                    </compilerArguments>
+
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2.1</version>
+                <configuration>          
+                    <archive>
+                        <manifest>
+                            <mainClass>vizardous.delegate.impl.MainView</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <developers>
+        <developer>
+            <id>cazzouzi</id>
+            <name>Charaf E. Azzouzi</name>
+            <email>c.azzouzi@fz-juelich.de</email>
+            <organization>Forschungszentrum Jülich GmbH, IBG-1: Biotechnology</organization>
+            <organizationUrl>http://www.fz-juelich.de/ibg/ibg-1/EN/Research/SystemsBiotechnology/modsim/modsim_node.html</organizationUrl>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+        <developer>
+            <id>stelfrich</id>
+            <name>Stefan Helfrich</name>
+            <email>s.helfrich@fz-juelich.de</email>
+            <organization>Forschungszentrum Jülich GmbH, IBG-1: Biotechnology</organization>
+            <organizationUrl>http://www.fz-juelich.de/ibg/ibg-1/EN/Research/SystemsBiotechnology/modsim/modsim_node.html</organizationUrl>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+    
+</project>

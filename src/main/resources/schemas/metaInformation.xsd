@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://meta"
+	xmlns="http://meta"
+	elementFormDefault="qualified">
+	
+	<!-- root element metaInformation -->
+	<xs:element name="metaInformation">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="description" type="xs:string" minOccurs="0" />
+				<xs:element name="phylogenyFile" type="xs:anyURI" minOccurs="0" />
+				<xs:element name="experimentDuration" type="xs:integer" />
+				<xs:element ref="frame" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+			<xs:attribute name="projectName" use="optional" />
+		</xs:complexType>
+	</xs:element>
+
+	<!-- metaInformation/frame -->
+	<xs:element name="frame">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="cell" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+			<xs:attribute name="id" use="optional" />
+			<xs:attribute name="elapsedTime" type="xs:integer" use="optional" />
+			<xs:attribute name="file" type="xs:anyURI" use="optional" />
+		</xs:complexType>
+	</xs:element>
+
+	<!-- metaInformation/frame/cell -->
+	<xs:element name="cell">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="contour" minOccurs="0" />
+			</xs:sequence>			
+			<xs:attribute name="id" type="xs:integer" use="optional" />
+			<xs:attribute name="fluorescence" type="xs:decimal" use="optional" />
+			<xs:attribute name="length" type="xs:decimal" use="optional" />
+			<xs:attribute name="area" type="xs:decimal" use="optional" />
+			<xs:attribute name="volume" type="xs:decimal" use="optional" />
+		</xs:complexType>
+	</xs:element>
+
+	<!-- metaInformation/frame/cell/contour -->
+	<xs:element name="contour">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="point" minOccurs="3" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- metaInformation/frame/cell/contour/point -->
+	<xs:element name="point">
+		<xs:complexType>
+			<xs:attribute name="x" type="xs:integer" use="required" />
+			<xs:attribute name="y" type="xs:integer" use="required" />
+			<xs:attribute name="z" type="xs:integer" use="optional" />			
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>
+
