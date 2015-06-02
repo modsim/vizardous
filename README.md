@@ -1,7 +1,7 @@
 Vizardous
 =========
 
-Vizardous is a software for the anlaysis of single-cell experiments. While its core functionality is the visualization of time-resolved single-cell but also population data, it can be used for the automated/scripted analysis of data as well.
+Vizardous is a software for the evaluation of single-cell experiments. While its core functionality is the visualization of time-resolved, single-cell but also population data, it can be used for the automated/scripted analysis of data as well.
 
 
 Purpose
@@ -19,7 +19,7 @@ A [manual](https://github.com/modsim/vizardous/blob/master/doc/Vizardous-Manual.
 For developers
 --------------
 
-Developer documentation is not yet available. For some example workflows look into at [vizardous-examples repository](https://github.com/modsim/vizardous-examples).
+Developer documentation is not yet available. For some example workflows look into at [vizardous-examples repository](https://github.com/modsim/vizardous-examples). This repository also contains datasets that can be used for testing Vizardous. Furthermore, a [TrackMate](https://github.com/fiji/TrackMate) action that can export time-resolved, single-cell information to PhyloXML/MetaXML is available  [here](https://github.com/modsim/vizardous-trackmate-exporter). 
 
 
 Contributing to Vizardous
