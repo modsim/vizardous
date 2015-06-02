@@ -13,7 +13,7 @@ Vizardous' primary purpose is to provide an easy to use software tool for scient
 For users
 ---------
 
-A [manual](MISSINGLINK) describing the most crucial steps in an analysis workflow is available. If you are using Vizardous for you science, please consider a [citation](https://github.com/modsim/vizardous#citing-vizardous).
+A [manual](https://github.com/modsim/vizardous/doc/Vizardous-Manual.pdf) describing the most crucial steps in an analysis workflow is available. If you are using Vizardous for you science, please consider a [citation](https://github.com/modsim/vizardous#citing-vizardous).
 
 
 For developers

@@ -15,8 +15,5 @@ target/
 nbactions.xml
 nb-configuration.xml
 
-# Javadoc folder
-doc/
-
 # External stuff
 external/
