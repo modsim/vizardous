@@ -1,7 +1,7 @@
 Vizardous
 =========
 
-Vizardous is software for the anlaysis of single-cell experiments. While its core functionality is the visualization of time-resolved single-cell but also population data, it can be used for the automated/scripted analysis of data as well.
+Vizardous is a software for the anlaysis of single-cell experiments. While its core functionality is the visualization of time-resolved single-cell but also population data, it can be used for the automated/scripted analysis of data as well.
 
 
 Purpose
@@ -13,7 +13,7 @@ Vizardous' primary purpose is to provide an easy to use software tool for scient
 For users
 ---------
 
-A [manual](MISSINGLINK) describing the most crucial steps in an analysis workflow is available. If you are using Vizardous for you science, please consider a [citation](Citing Vizardous).
+A [manual](MISSINGLINK) describing the most crucial steps in an analysis workflow is available. If you are using Vizardous for you science, please consider a [citation](https://github.com/modsim/vizardous#citing-vizardous).
 
 
 For developers
@@ -32,5 +32,5 @@ to the [Vizardous repository](https://github.com/modsim/vizardous).
 Citing Vizardous
 ----------------
 
-Helfrich et al. (2015), Vizardous: Interactive Analysis of Microbial Populations with Single Cell Resolution, Bioinformatics, doi:XXX
+Helfrich et al., Vizardous: Interactive Analysis of Microbial Populations with Single Cell Resolution, Bioinformatics, in revision
 
