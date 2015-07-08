@@ -6,7 +6,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import vizardous.model.impl.Cell;
+
+import com.mxgraph.layout.mxCompactTreeLayout;
 import com.mxgraph.layout.mxGraphLayout;
+import com.mxgraph.model.mxCell;
+import com.mxgraph.model.mxGeometry;
 import com.mxgraph.model.mxGraphModel;
 import com.mxgraph.model.mxIGraphModel;
 import com.mxgraph.util.mxPoint;
@@ -15,6 +20,8 @@ import com.mxgraph.util.mxUtils;
 import com.mxgraph.view.mxCellState;
 import com.mxgraph.view.mxGraph;
 import com.mxgraph.view.mxGraphView;
+
+import edu.uci.ics.jung.io.graphml.NodeMetadata;
 
 public class MyCompactTreeLayout extends mxGraphLayout
 {
@@ -93,6 +100,11 @@ public class MyCompactTreeLayout extends mxGraphLayout
 	 * Whether or not to apply the internal tree edge routing
 	 */
 	protected boolean edgeRouting = true;
+	
+	/**
+	 * Specifies the maximum node size. Is necessary to keep all nodes on different branches on the same x-level.
+	 */
+	private int maxNodeSize;
 
 	/**
 	 * 
@@ -271,6 +283,11 @@ public class MyCompactTreeLayout extends mxGraphLayout
 		this.groupPadding = groupPadding;
 	}
 
+	public void setMaxNodeSize(int maxNodeSize)
+	{
+		this.maxNodeSize = maxNodeSize;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.mxgraph.layout.mxIGraphLayout#execute(java.lang.Object)
@@ -604,13 +621,14 @@ public class MyCompactTreeLayout extends mxGraphLayout
 			mxRectangle bounds)
 	{
 		node.x += x0 + node.offsetX;
-		node.y += y0 + node.offsetY;
+		node.y += y0 + node.offsetY + maxNodeSize/2 - node.height/2;
+		System.out.println("ypos = " + node.y);
 		bounds = apply(node, bounds);
 		TreeNode child = node.child;
 
 		if (child != null)
 		{
-			bounds = horizontalLayout(child, node.x, node.y, bounds);
+			bounds = horizontalLayout(child, node.x, /*node.y*/y0 + node.offsetY, bounds);
 			double siblingOffset = node.y + child.offsetY;
 			TreeNode s = child.next;
 
@@ -660,19 +678,36 @@ public class MyCompactTreeLayout extends mxGraphLayout
 	 */
 	protected void attachParent(TreeNode node, double height)
 	{
-		double ax = (110-node.child.height)/2;
+		double branchLength = ((Cell)((mxCell)node.cell).getValue()).getCladeObject().getBranchLength();
+		double ax = (maxNodeSize-node.child.height)/2;
 		double x = nodeDistance + levelDistance + ax;
-		double y2 = (height - node.width) / 2 - nodeDistance;
-		double y1 = y2 + node.width + 2 * nodeDistance - height;
+		double y2 = (height - /*node.width*/ maxNodeSize) / 2 - nodeDistance;
+		double y1 = y2 + /*node.width*/ maxNodeSize + 2 * nodeDistance - height;
 
-		node.child.offsetX = x + node.height + (110-node.height)/2;
+		node.child.offsetX = x + node.height + (maxNodeSize-node.height)/2;
 		node.child.offsetY = y1;
 
 		node.contour.upperHead = createLine(node.height, 0,
 				createLine(x, y1, node.contour.upperHead));
 		node.contour.lowerHead = createLine(node.height, 0,
 				createLine(x, y2, node.contour.lowerHead));
-	}
+
+//		System.out.println("Calc height: " + y2);
+		
+	
+	
+/*		double x = nodeDistance + levelDistance;
+		double y2 = (height - node.width) / 2 - nodeDistance;
+		double y1 = y2 + node.width + 2 * nodeDistance - height;
+
+		node.child.offsetX = x + node.height;
+		node.child.offsetY = y1;
+
+		node.contour.upperHead = createLine(node.height, 0,
+				createLine(x, y1, node.contour.upperHead));
+		node.contour.lowerHead = createLine(node.height, 0,
+				createLine(x, y2, node.contour.lowerHead));*/
+}
 
 	/**
 	 * 
@@ -681,10 +716,15 @@ public class MyCompactTreeLayout extends mxGraphLayout
 	{
 		double dist = 2 * nodeDistance;
 
-		node.contour.upperTail = createLine(node.height + dist, 0, null);
+/*		node.contour.upperTail = createLine(node.height + dist, 0, null);
 		node.contour.upperHead = node.contour.upperTail;
 		node.contour.lowerTail = createLine(0, -node.width - dist, null);
 		node.contour.lowerHead = createLine(node.height + dist, 0,
+				node.contour.lowerTail);*/
+		node.contour.upperTail = createLine(maxNodeSize + dist, 0, null);
+		node.contour.upperHead = node.contour.upperTail;
+		node.contour.lowerTail = createLine(0, -maxNodeSize - dist, null);
+		node.contour.lowerHead = createLine(maxNodeSize + dist, 0,
 				node.contour.lowerTail);
 	}
 
@@ -697,7 +737,7 @@ public class MyCompactTreeLayout extends mxGraphLayout
 
 		TreeNode child = node.child;
 		node.contour = child.contour;
-		double h = child.width + dist;
+		double h = /*child.width*/ maxNodeSize + dist;
 		double sum = h;
 		child = child.next;
 
@@ -706,7 +746,7 @@ public class MyCompactTreeLayout extends mxGraphLayout
 			double d = merge(node.contour, child.contour);
 			child.offsetY = d + h;
 			child.offsetX = 0;
-			h = child.width + dist;
+			h = /*child.width*/ maxNodeSize + dist;
 			sum += d + h;
 			child = child.next;
 		}
@@ -1008,6 +1048,7 @@ public class MyCompactTreeLayout extends mxGraphLayout
 		double currentYOffset = minEdgeJetty - prefVertEdgeOff;
 		double maxYOffset = 0;
 
+		mxGeometry geom =((mxCell)parentCell).getGeometry();
 		mxRectangle parentBounds = getVertexBounds(parentCell);
 		child = node.child;
 

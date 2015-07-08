@@ -124,10 +124,12 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
     
     private MyPopUpMenu myPopupMenu;
     private CellPopupMenu cellPopupMenu;
-
+    
     // max and stdandard dimensions for a vertex in the graph
-    public static final Dimension max = new Dimension(110, 110);
-    public static final Dimension std = new Dimension(20, 20);
+    public static final Dimension max = new Dimension(100, 100);
+    public static final Dimension std = new Dimension(15, 15);
+    
+    private int maxNodeSize = std.height;
     
     // standard vertex and edge style 
     public static final Style stdVertexStyle = new Style("");
@@ -382,7 +384,7 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
 				Cell cell = phylogenyIter.next();
 				Cell parent = cell.getParentCell();
 				
-				Object cellVertex = newGraph.insertVertex(defaultParent, cell.getId(), cell, 0, 0, max.getWidth(), max.getHeight());//, stdVertexStyle.toString());
+				Object cellVertex = newGraph.insertVertex(defaultParent, cell.getId(), cell, 0, 0, std.getWidth(), std.getHeight());//, stdVertexStyle.toString());
 				
 				map.put(cell, (mxCell) cellVertex);
 			}
@@ -955,12 +957,30 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
 		// define layout
         MyCompactTreeLayout layout = new MyCompactTreeLayout(graph, bHorizontal);
 
-        // set some layout specific features
-        layout.setNodeDistance(100);
-        layout.setLevelDistance(0);
+		// set some layout specific features
+/*        layout.setNodeDistance(nodeDistance);
+        layout.setLevelDistance(nodeLvlDistance);*/
+        layout.setLevelDistance(50);
+        layout.setMaxNodeSize(maxNodeSize);
         
 	    // apply the layout to the graph
 	    layout.execute(graph.getDefaultParent());
+	}
+    
+    public void moveCell(Cell cell)
+    {
+    	graph.getModel().beginUpdate();
+    	mxGeometry geom = ((MyModel)graph.getModel()).getVertex(cell.getId()).getGeometry();
+    	geom.setY(geom.getY() + (maxNodeSize/2) - (geom.getHeight()/2));
+    	System.out.println("move: " + geom.getY());
+    	graph.getModel().setGeometry(((MyModel)graph.getModel()).getVertex(cell.getId()), geom);
+    	
+    	List<Cell> children = cell.getChildren();
+    	
+    	for(Cell child : children) {
+    		moveCell(child);
+    	}
+    	graph.getModel().endUpdate();
     }
 
     /**
@@ -1013,7 +1033,9 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
 		{
 			newGraph.getModel().endUpdate();
 		}
-
+		
+		maxNodeSize = max.height;
+		
 		applyLayout(newGraph);
 	    
 	    graphComponent.setGraph(newGraph);
@@ -1021,6 +1043,14 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
 	    // set new graph in the object
 	    graph = newGraph;
 	    
+/*	    graph.getModel().beginUpdate();
+	    
+	    Cell cell = phylogeny.getRootCell();
+	    
+	    moveCell(cell);
+	    
+	    graph.getModel().endUpdate();*/
+
 	    // the scale changes also when the graph changes. At first aplly a new scale
 	    applyPerfectScale();
 	}
