@@ -127,7 +127,7 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
     
     // max and stdandard dimensions for a vertex in the graph
     public static final Dimension max = new Dimension(100, 100);
-    public static final Dimension std = new Dimension(15, 15);
+    public static final Dimension std = new Dimension(20, 20);
     
     private int maxNodeSize = std.height;
     
@@ -958,8 +958,6 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
         MyCompactTreeLayout layout = new MyCompactTreeLayout(graph, bHorizontal);
 
 		// set some layout specific features
-/*        layout.setNodeDistance(nodeDistance);
-        layout.setLevelDistance(nodeLvlDistance);*/
         layout.setLevelDistance(50);
         layout.setMaxNodeSize(maxNodeSize);
         
@@ -967,22 +965,6 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
 	    layout.execute(graph.getDefaultParent());
 	}
     
-    public void moveCell(Cell cell)
-    {
-    	graph.getModel().beginUpdate();
-    	mxGeometry geom = ((MyModel)graph.getModel()).getVertex(cell.getId()).getGeometry();
-    	geom.setY(geom.getY() + (maxNodeSize/2) - (geom.getHeight()/2));
-    	System.out.println("move: " + geom.getY());
-    	graph.getModel().setGeometry(((MyModel)graph.getModel()).getVertex(cell.getId()), geom);
-    	
-    	List<Cell> children = cell.getChildren();
-    	
-    	for(Cell child : children) {
-    		moveCell(child);
-    	}
-    	graph.getModel().endUpdate();
-    }
-
     /**
 	 * Updates the whole graph. Vertex size is calculated linear by the normed
 	 * value defined in the map (0.0 - 1.0)
@@ -1043,14 +1025,6 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
 	    // set new graph in the object
 	    graph = newGraph;
 	    
-/*	    graph.getModel().beginUpdate();
-	    
-	    Cell cell = phylogeny.getRootCell();
-	    
-	    moveCell(cell);
-	    
-	    graph.getModel().endUpdate();*/
-
 	    // the scale changes also when the graph changes. At first aplly a new scale
 	    applyPerfectScale();
 	}
