@@ -621,7 +621,7 @@ public class MyCompactTreeLayout extends mxGraphLayout
 			mxRectangle bounds)
 	{
 		node.x += x0 + node.offsetX;
-		node.y += y0 + node.offsetY + maxNodeSize/2 - node.height/2;
+		node.y += y0 + node.offsetY + (maxNodeSize - node.height)/2;
 		System.out.println("ypos = " + node.y);
 		bounds = apply(node, bounds);
 		TreeNode child = node.child;
@@ -650,14 +650,14 @@ public class MyCompactTreeLayout extends mxGraphLayout
 	protected mxRectangle verticalLayout(TreeNode node, Object parent,
 			double x0, double y0, mxRectangle bounds)
 	{
-		node.x += x0 + node.offsetY;
+		node.x += x0 + node.offsetY  + (maxNodeSize - node.width)/2;
 		node.y += y0 + node.offsetX;
 		bounds = apply(node, bounds);
 		TreeNode child = node.child;
 
 		if (child != null)
 		{
-			bounds = verticalLayout(child, node, node.x, node.y, bounds);
+			bounds = verticalLayout(child, node, /*node.x*/x0 + node.offsetY, node.y, bounds);
 			double siblingOffset = node.x + child.offsetY;
 			TreeNode s = child.next;
 
@@ -678,6 +678,8 @@ public class MyCompactTreeLayout extends mxGraphLayout
 	 */
 	protected void attachParent(TreeNode node, double height)
 	{
+//		double xOffset = nodeDistance + maxNodeSize/2 - node.height/2
+		
 		double branchLength = ((Cell)((mxCell)node.cell).getValue()).getCladeObject().getBranchLength();
 		double ax = (maxNodeSize-node.child.height)/2;
 		double x = nodeDistance + levelDistance + ax;
