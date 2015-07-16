@@ -281,7 +281,6 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         exportSingleCellDivisionTimes = new javax.swing.JMenuItem();
         exportPopulationDivisionTimes = new javax.swing.JMenuItem();
         exportPopulationDivisionTimesDistribution = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         printMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
@@ -1675,16 +1674,6 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         exportDiagrammsMenu.add(jMenu2);
 
         fileMenu.add(exportDiagrammsMenu);
-
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/BildExport.png"))); // NOI18N
-        jMenuItem1.setText("Export image");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        fileMenu.add(jMenuItem1);
         fileMenu.add(jSeparator3);
 
         printMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
@@ -2591,12 +2580,6 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
     private void cascadeBarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cascadeBarItemActionPerformed
         cascadeMenuItemActionPerformed(evt);
     }//GEN-LAST:event_cascadeBarItemActionPerformed
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-         JOptionPane.showMessageDialog(this,
-                "This option is still being implemented",
-                "Message", JOptionPane.INFORMATION_MESSAGE, new javax.swing.ImageIcon(getClass().getResource("/icons/under_construction48x48.png")));
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
           
     /**
      * Centers this frame on screen when opened
@@ -2954,7 +2937,6 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItemAbout;
     private javax.swing.JMenuItem jMenuItemHelp;
     private javax.swing.JPanel jPanel11;
