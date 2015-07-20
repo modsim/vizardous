@@ -2,6 +2,7 @@ package vizardous.delegate.impl.jgraphx;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
 
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxIGraphModel;
@@ -23,6 +24,15 @@ public class MyGraphComponent extends mxGraphComponent{
 	 */
 	public MyGraphComponent(mxGraph graph) {
 		super(graph);
+	}
+	
+	@Override
+	/**
+	 * If and only if the Ctrl-button is pressed panning is activated
+	 */
+	public boolean isPanningEvent(MouseEvent event) {
+		return (event != null) ? !event.isAltDown() && !event.isShiftDown() && (event.isControlDown() || event.isMetaDown())
+				: false;
 	}
 	
 	/**
