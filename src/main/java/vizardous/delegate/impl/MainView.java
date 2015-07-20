@@ -26,6 +26,8 @@ import javax.swing.table.DefaultTableModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import EDU.oswego.cs.dl.util.concurrent.CountDown;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -40,6 +42,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.JFrame;
@@ -47,6 +50,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ProgressMonitor;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import vizardous.delegate.impl.graphics.ComparisonGrowthCurveChart2D;
@@ -86,7 +90,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
     private OMEROServer         omeroServer             = null;
     private Login               login                   = null;
     private File                userDirectory           = null;
-    private DataModel           newDataModel            = null;
+    private volatile DataModel           newDataModel            = null;
     private String              lineChart               = "line";
     private String              histoChart              = "histogram";
     private List<PhyloTreeAnalyser>  listphyloTreeAnalyser   = null;
@@ -94,6 +98,8 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
     private JScrollPane         cellsComparisonTabScrollPaneCopie            = null;
     private ProgressMonitor 	progressMonitor;
     private CellsComparisonTable cellsComaparisonTable = null;
+    private CountDownLatch latch = null;
+    private int fileNumber = 0;
     
     /** The {@link Logger} for this class. */
     final Logger logger = LoggerFactory.getLogger(MainView.class);
@@ -2221,91 +2227,142 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
     	/* Disable the Import button */
     	importAllFilesInTable.setEnabled(false);
     	
-    	/* Add progress monitor*/
-    	progressMonitor = new ProgressMonitor(this, "Importing files", "", 0, 100);
-    	progressMonitor.setProgress(0);
+//    	ddd
+    	
+    	/* Close and remove 'old' trees */
+    	for(PhyloTreeAnalyser analyzer : listphyloTreeAnalyser ) {
+    		extendDesk.remove(analyzer);
+        }
+    	listphyloTreeAnalyser.clear();
+    	
+    	Set<Map.Entry<File, File>> filePairs = fileListToBeImported.entrySet();
+              	               	     
+        fileNumber = filePairs.size();
+        latch = new CountDownLatch(fileNumber);
+
+        /* Add progress monitor*/
+    	progressMonitor = new ProgressMonitor(this, "Importing files", "", 0, fileNumber);
+    	progressMonitor.setProgress(1);
     	progressMonitor.setMillisToDecideToPopup(0);
     	progressMonitor.setMillisToPopup(0);
-    	
-    	SwingWorker modelWorker = new SwingWorker<DataModel, Void>() {
-    	    @Override
-    	    public DataModel doInBackground() throws PhyloXMLException, MetaXMLException {
-    	    	/* Close and remove 'old' trees */
-            	for(PhyloTreeAnalyser analyzer : listphyloTreeAnalyser ) {
-            		extendDesk.remove(analyzer);
-                }
-            	listphyloTreeAnalyser.clear();
-    	    	
-    	    	final DataModel dataModel = new DataModel();        	        
-    	        Set<Map.Entry<File, File>> filePairs = fileListToBeImported.entrySet();
-    	        
-    	        int fileCounter = 1;       	               	     
-    	        int fileNumber = filePairs.size();
-    	        
-    	        for (Map.Entry<File, File> me : filePairs) {
-    				File phyloFile = me.getKey();
-    				File metaFile = me.getValue();
-    				
-    				if ((phyloFile != null) && (metaFile != null)) {
-    					Forest f = new Forest(phyloFile, metaFile);
-    					
-    					/* Add to DataModel */
-    					dataModel.addForest(f);
+        
+        final class Supervisor extends SwingWorker<Void, Void> {
+
+            CountDownLatch latch;
+
+            public Supervisor(CountDownLatch latch) {
+                this.latch = latch;
+            }
+
+            @Override
+            protected Void doInBackground() throws Exception {
+                latch.await();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+            	extendDesk.validate();
+	            
+	            visualAnalysisMenu.setEnabled(true);
+	            comparisonGrowthRateChartMenuItem.setEnabled(true);
+	            comparisonGrowthCurveChartMenuItem.setEnabled(true);
+	            mainMenuTabbedPane.setSelectedIndex(2);
+            }
+        }
+        
+        new Supervisor(latch).execute();
+        
+        for (Map.Entry<File, File> me : filePairs) {
+			final File phyloFile = me.getKey();
+			final File metaFile = me.getValue();
+			
+			SwingWorker<TreeLoadingResult, Void> modelWorker = new SwingWorker<TreeLoadingResult, Void>() {
+	    	    CountDownLatch latch;
+				
+				public SwingWorker<TreeLoadingResult, Void> setLatch(CountDownLatch latch) {
+	    	    	this.latch = latch;
+	    	    	
+	    	    	return this;
+	    	    }
+				
+				@Override
+	    	    public TreeLoadingResult doInBackground() throws PhyloXMLException, MetaXMLException {   	        	    	        
+	    	    	/* Update progress */
+	    	    	setProgress(0);
+	    	    	
+					/*
+					 * Make the thread sleep for 500ms to force the
+					 * progressMonitor to appear in any case
+					 */
+					try {
+						Thread.sleep(500);
+						setProgress(1);
+					} catch (InterruptedException e) {}
+	    	    	
+	    	    	Forest f = null;	    	    	
+	    	    	PhyloTreeAnalyser phyloTreeAnalyserJinterFrame = null;
+	    	    	
+	    	    	if ((phyloFile != null) && (metaFile != null)) {
+	    	    		f = new Forest(phyloFile, metaFile);
     					
     					/* Create visualization */
-    					PhyloTreeAnalyser phyloTreeAnalyserJinterFrame = new PhyloTreeAnalyser(f, cellsComaparisonTable);
-    					listphyloTreeAnalyser.add(phyloTreeAnalyserJinterFrame);
-    					
-    					int progress = (int)((fileCounter/(double)fileNumber)*100);
-    					setProgress(progress);
-    					
-    					fileCounter++;
+    					phyloTreeAnalyserJinterFrame = new PhyloTreeAnalyser(f, cellsComaparisonTable);
     				}
-    			}
-    	        
-    	        return dataModel;
-    	    }
+  
+	    	    	/* Update progress */
+	    	    	latch.countDown();
+	    	    	setProgress(100);
+	    	    	
+	    	        return new TreeLoadingResult(f, phyloTreeAnalyserJinterFrame);
+	    	    }
 
-    	    @Override
-    	    public void done() {
-    	        try {
-    	        	try {
-    	        		newDataModel = get();
-    	        	} catch (ExecutionException ex) {
-						/*
-						 * The SwingWorker framework wraps the exceptions thrown
-						 * by doInBackground into ExecutionExceptions that are
-						 * thrown when calling get()
-						 */
-    	        		if (ex.getCause() instanceof PhyloXMLException) {
-	    	        		JOptionPane.showMessageDialog(MainView.this,
-	    	        				ex.getCause().getMessage(),
-	    	                        "Problem loading PhyloXML",
-	    	                        JOptionPane.INFORMATION_MESSAGE, new javax.swing.ImageIcon(getClass().getResource("/icons/symbol_information32x32.png")));
-	    	        		return;
-    	        		} else if (ex.getCause() instanceof MetaXMLException) {
-    	        			JOptionPane.showMessageDialog(MainView.this,
-    	        					ex.getCause().getMessage(),
-        	                        "Problem loading MetaXML",
-        	                        JOptionPane.INFORMATION_MESSAGE, new javax.swing.ImageIcon(getClass().getResource("/icons/symbol_information32x32.png")));
-        	        		return;
-    	        		}
-    	        	}
-    	        	
-    	        	/* Do not show the trees until all have been imported */
-    	            for(PhyloTreeAnalyser analyzer : listphyloTreeAnalyser ) {
-    	            	extendDesk.add(analyzer);
-    	            }   
-    	            extendDesk.validate();
-    	            
-    	            visualAnalysisMenu.setEnabled(true);
-    	            comparisonGrowthRateChartMenuItem.setEnabled(true);
-    	            comparisonGrowthCurveChartMenuItem.setEnabled(true);
-    	            mainMenuTabbedPane.setSelectedIndex(2);
-    	        } catch (InterruptedException ignore) {}
-    	    }
-    	};
-    	modelWorker.addPropertyChangeListener(this);
+	    	    @Override
+	    	    public void done() {
+	    	        try {
+	    	        	try {    	        		
+	    	        		TreeLoadingResult result = get();
+	    	        		
+	    	        		Forest f = result.forest;	    	    	
+	    	    	    	PhyloTreeAnalyser phyloTreeAnalyserJinterFrame = result.phyloTreeAnalyser;
+	    	        		
+	    	        		/* Add to DataModel */
+	    	        		if (newDataModel == null) {
+	    	        			newDataModel = new DataModel();
+	    	        		}
+	    	    	    	newDataModel.addForest(f);
+	    					
+	    	        		/* Add to list of analyzers */
+	    					listphyloTreeAnalyser.add(phyloTreeAnalyserJinterFrame);
+	    					
+	    					extendDesk.add(phyloTreeAnalyserJinterFrame);
+	    	        	} catch (ExecutionException ex) {
+							/*
+							 * The SwingWorker framework wraps the exceptions thrown
+							 * by doInBackground into ExecutionExceptions that are
+							 * thrown when calling get()
+							 */
+	    	        		if (ex.getCause() instanceof PhyloXMLException) {
+		    	        		JOptionPane.showMessageDialog(MainView.this,
+		    	        				ex.getCause().getMessage(),
+		    	                        "Problem loading PhyloXML",
+		    	                        JOptionPane.INFORMATION_MESSAGE, new javax.swing.ImageIcon(getClass().getResource("/icons/symbol_information32x32.png")));
+		    	        		return;
+	    	        		} else if (ex.getCause() instanceof MetaXMLException) {
+	    	        			JOptionPane.showMessageDialog(MainView.this,
+	    	        					ex.getCause().getMessage(),
+	        	                        "Problem loading MetaXML",
+	        	                        JOptionPane.INFORMATION_MESSAGE, new javax.swing.ImageIcon(getClass().getResource("/icons/symbol_information32x32.png")));
+	        	        		return;
+	    	        		}
+	    	        	}    	            
+	    	        } catch (InterruptedException ignore) {}
+	    	    }
+	    	}.setLatch(latch);
+	    	
+	    	modelWorker.addPropertyChangeListener(this);
+	    	modelWorker.execute();
+        }
 
     	cellsComaparisonTable = new CellsComparisonTable();
     	if( tableforImportFiles.getModel().getRowCount() == 0 ) {
@@ -2314,7 +2371,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
                 "Message",
                 JOptionPane.INFORMATION_MESSAGE, new javax.swing.ImageIcon(getClass().getResource("/icons/symbol_information32x32.png")));
         } else {        	
-        	modelWorker.execute();
+//        	modelWorker.execute();
         }
         
         //TODO create hier the comparison table 
@@ -2783,7 +2840,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         }
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable() {
             
             @Override
             public void run() {
@@ -2801,8 +2858,8 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         } else if (event.getPropertyName().equals("progress")) {            
             // get the % complete from the progress event
             // and set it on the progress monitor
-            int progress = ((Integer)event.getNewValue()).intValue();
-            progressMonitor.setProgress(progress);            
+        	int progress = ((Integer)event.getNewValue()).intValue();
+            progressMonitor.setProgress(fileNumber - (int) latch.getCount());
         }        
     }
     
