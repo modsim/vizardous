@@ -1,6 +1,7 @@
 package vizardous.delegate.impl.jgraphx;
 
 import vizardous.model.impl.Cell;
+import vizardous.model.impl.Clade;
 import vizardous.model.impl.Constants;
 
 import com.mxgraph.model.mxCell;
@@ -37,9 +38,14 @@ public class MyGraph extends mxGraph {
 	                +"</p>\n<p>Cell Elapsed-Time: "+ cell.getMIFrameObject().getElapsedTime()
 	                +"    ,<br>\netc...<br></p>"
 //	                + String.format("pos: (%.2f,%.2f)", graphCell.getGeometry().getCenterX(), graphCell.getGeometry().getCenterY())
-//	                + String.format("<br />width: %.2f", graphCell.getGeometry().getWidth())
+//	                + String.format("ypos: %.2f", graphCell.getGeometry().getY() + 50 - graphCell.getGeometry().getHeight()/2)
+	                + String.format("<br />Diameter: %.2f", graphCell.getGeometry().getWidth())
 	                + "\n\n</body>\n</html>";
 	        return tooltipInfo;
+		}
+		else
+		{
+			return "Branch lenght: " + ((Clade)graphCell.getValue()).getBranchLength();
 		}
 
 		
@@ -48,7 +54,6 @@ public class MyGraph extends mxGraph {
 			return "I'm an edge!";
 		else
 			return "I'm a vertex!";*/
-		return "";
 	}
 	
 	/**

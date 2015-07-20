@@ -124,10 +124,12 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
     
     private MyPopUpMenu myPopupMenu;
     private CellPopupMenu cellPopupMenu;
-
+    
     // max and stdandard dimensions for a vertex in the graph
-    public static final Dimension max = new Dimension(110, 110);
+    public static final Dimension max = new Dimension(100, 100);
     public static final Dimension std = new Dimension(20, 20);
+    
+    private int maxNodeSize = std.height;
     
     // standard vertex and edge style 
     public static final Style stdVertexStyle = new Style("");
@@ -382,7 +384,7 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
 				Cell cell = phylogenyIter.next();
 				Cell parent = cell.getParentCell();
 				
-				Object cellVertex = newGraph.insertVertex(defaultParent, cell.getId(), cell, 0, 0, max.getWidth(), max.getHeight());//, stdVertexStyle.toString());
+				Object cellVertex = newGraph.insertVertex(defaultParent, cell.getId(), cell, 0, 0, std.getWidth(), std.getHeight());//, stdVertexStyle.toString());
 				
 				map.put(cell, (mxCell) cellVertex);
 			}
@@ -955,14 +957,14 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
 		// define layout
         MyCompactTreeLayout layout = new MyCompactTreeLayout(graph, bHorizontal);
 
-        // set some layout specific features
-        layout.setNodeDistance(100);
-        layout.setLevelDistance(0);
+		// set some layout specific features
+        layout.setLevelDistance(50);
+        layout.setMaxNodeSize(maxNodeSize);
         
 	    // apply the layout to the graph
 	    layout.execute(graph.getDefaultParent());
-    }
-
+	}
+    
     /**
 	 * Updates the whole graph. Vertex size is calculated linear by the normed
 	 * value defined in the map (0.0 - 1.0)
@@ -1013,7 +1015,9 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
 		{
 			newGraph.getModel().endUpdate();
 		}
-
+		
+		maxNodeSize = max.height;
+		
 		applyLayout(newGraph);
 	    
 	    graphComponent.setGraph(newGraph);
