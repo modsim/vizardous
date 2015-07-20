@@ -31,7 +31,7 @@ public class MyGraphComponent extends mxGraphComponent{
 	 * If and only if the Ctrl-button is pressed panning is activated
 	 */
 	public boolean isPanningEvent(MouseEvent event) {
-		return (event != null) ? !event.isAltDown() && !event.isShiftDown() && event.isControlDown()
+		return (event != null) ? !event.isAltDown() && !event.isShiftDown() && (event.isControlDown() || event.isMetaDown())
 				: false;
 	}
 	
