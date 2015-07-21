@@ -229,6 +229,17 @@
             </roles>
             <timezone>+1</timezone>
         </developer>
+        <developer>
+            <id>seiffarth</id>
+            <name>Johannes Seiffarth</name>
+            <email>j.seiffarth@fz-juelich.de</email>
+            <organization>Forschungszentrum Jülich GmbH, IBG-1: Biotechnology</organization>
+            <organizationUrl>http://www.fz-juelich.de/ibg/ibg-1/EN/Research/SystemsBiotechnology/modsim/modsim_node.html</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
     </developers>
     
 </project>
