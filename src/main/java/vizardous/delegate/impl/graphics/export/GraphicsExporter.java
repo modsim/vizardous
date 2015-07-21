@@ -43,8 +43,12 @@ import vizardous.delegate.impl.graphics.AbstractChart2D;
 import vizardous.delegate.impl.graphics.TraceChart2D;
 
 /**
- *
- * @author azzouzi
+ * Export functionality for charts.
+ * 
+ * Methods are called via menu entries for exporting charts.
+ * 
+ * @author Charaf E. Azzouzi <c.azzouzi@fz-juelich.de>
+ * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
  */
 public class GraphicsExporter {
     
