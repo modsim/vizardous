@@ -268,4 +268,14 @@ public abstract class AbstractChart2D extends JPanel implements ActionListener {
 	public String getTabName() {
 		return this.tabName;
 	}
+	
+	/**
+	 * Returns the underlying {@link JFreeChart} instance that is for example
+	 * used for exporting to vector graphics formats.
+	 * 
+	 * @return The wrapped {@link JFreeChart} instance.
+	 */
+	public JFreeChart getChart() {
+		return this.chart;
+	}
 }

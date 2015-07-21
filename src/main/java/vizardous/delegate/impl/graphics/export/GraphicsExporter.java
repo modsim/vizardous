@@ -5,9 +5,11 @@
 package vizardous.delegate.impl.graphics.export;
 
 import com.lowagie.text.PageSize;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
+
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -29,6 +31,7 @@ import javax.swing.JScrollPane;
 
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
+import org.apache.commons.io.FilenameUtils;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
@@ -49,8 +52,7 @@ public class GraphicsExporter {
      
      public void exportChart2D(AbstractChart2D chart, String chartArt) {
         JFileChooser myChooser = new JFileChooser();
-        myChooser.setCurrentDirectory(myChooser.getFileSystemView()
-                        .getParentDirectory(new File(System.getProperty("user.home"))));
+        myChooser.setCurrentDirectory(myChooser.getFileSystemView().getHomeDirectory());
         myChooser.setAcceptAllFileFilterUsed(false);
         myChooser.addChoosableFileFilter(new PNGFileFilter());
         myChooser.addChoosableFileFilter(new SVGFileFilter());
@@ -64,9 +66,18 @@ public class GraphicsExporter {
             String filePath = myChooser.getSelectedFile().getPath();
             String filterDescription = myChooser.getFileFilter().getDescription();//getChoosableFileFilters();
 
+            /* Remove wrong file extension */
+     	   if (!FilenameUtils.isExtension(filePath, "pdf")) {
+     		   filePath = FilenameUtils.removeExtension(filePath);
+     	   }
+            
             // export graphic in png format
             if(filterDescription.equals("Portable Network Graphics (*.png)")) {
-                filePath = filePath + ".png";
+            	/* Add correct extension (.png) */
+          	   if (FilenameUtils.getExtension(filePath).equals("")) {
+          		  filePath = filePath + ".png";
+          	   }
+          	   
                 BufferedImage bi = new BufferedImage((int) chart.getBounds().getWidth(), 
                         (int) chart.getBounds().getHeight(), BufferedImage.TYPE_INT_ARGB); 
                 Graphics g = bi.createGraphics();
@@ -83,7 +94,11 @@ public class GraphicsExporter {
             }
             // export graphic in svg format
             else if (filterDescription.equals("Scalable Vector Graphics (*.svg)")) {
-                filePath = filePath + ".svg";
+            	/* Add correct extension (.svg) */
+          	   if (FilenameUtils.getExtension(filePath).equals("")) {
+          		  filePath = filePath + ".svg";
+          	   }
+          	   
                 if(chartArt.equals("line"))  {
                     TraceChart2D oo = (TraceChart2D) chart;
                     oo.saveSVG(myChooser.getSelectedFile());
@@ -122,8 +137,12 @@ public class GraphicsExporter {
             }
 
             // export graphic in jpeg format
-            else if (filterDescription.equals("Portable Document Format (*.jpeg)")) {
-                filePath = filePath + ".jpeg";
+            else if (filterDescription.equals("Joint Photographic Experts Group Format (*.jpeg)")) {
+            	/* Add correct extension (.jpeg) */
+         	   if (FilenameUtils.getExtension(filePath).equals("")) {
+         		  filePath = filePath + ".jpeg";
+         	   }
+            	
                 BufferedImage expImage = new BufferedImage(chart.getWidth(),
                 chart.getHeight(),BufferedImage.TYPE_INT_RGB);
                 /*
@@ -145,31 +164,30 @@ public class GraphicsExporter {
                          System.err.println(ex);
                 }
             }
-           else if(filterDescription.equals("Portable Document Format (*.pdf)")) {
-                        filePath = filePath + ".pdf";
-                        com.lowagie.text.Document document = new com.lowagie.text.Document(PageSize.A4.rotate(),0,0,0,0);
-                       try {
-                              PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File(filePath)));
-                              document.open();
-                              PdfContentByte contentByte = writer.getDirectContent();
-                              PdfTemplate template = contentByte.createTemplate( chart.getWidth(), 
-                                      chart.getHeight());
-                              Graphics2D g2 = template.createGraphics( 
-                                      chart.getWidth(), 
-                                      chart.getHeight());
-                              chart.print(g2);
-                              g2.dispose();
-                              contentByte.addTemplate(template, 0, 200);
-                          } catch (Exception ex) {
-                              ex.printStackTrace();
-                              System.err.println(ex);
-                          }
-                          finally {
-                            if(document.isOpen()) {
-                                document.close();
-                            }
-                         }
-                    }//if-PDF
+           else if(filterDescription.equals("Portable Document Format (*.pdf)")) {        	   
+        	   /* Add correct extension (.pdf) */
+        	   if (FilenameUtils.getExtension(filePath).equals("")) {
+        		   filePath = filePath + ".pdf";
+        	   }
+        	          	   
+        	   com.lowagie.text.Document document = new com.lowagie.text.Document(new Rectangle(0f, 0f, (float) chart.getWidth(), (float) chart.getHeight()),0,0,0,0);
+               try {
+                      PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File(filePath)));
+                      document.open();
+                      PdfContentByte contentByte = writer.getDirectContent();
+                      Graphics2D g2 = contentByte.createGraphics(chart.getWidth(), chart.getHeight());
+                      
+                      chart.getChart().draw(g2, new java.awt.Rectangle(chart.getWidth(), chart.getHeight()));
+                      
+                      g2.dispose();
+                  } catch (Exception ex) {
+                      ex.printStackTrace();
+                      System.err.println(ex);
+                  }
+                  finally {
+                   document.close();
+                 }
+            }//if-PDF
           }//if-SelectFile
          }//iF-ApproveOpt.
     }
