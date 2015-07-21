@@ -15,26 +15,19 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.commons.io.FilenameUtils;
 import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.Document;
-
 import vizardous.delegate.impl.fileFilter.JPEGFileFilter;
 import vizardous.delegate.impl.fileFilter.PDFFileFilter;
 import vizardous.delegate.impl.fileFilter.PNGFileFilter;
@@ -51,10 +44,14 @@ import vizardous.delegate.impl.graphics.TraceChart2D;
  * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
  */
 public class GraphicsExporter {
-    
-     public GraphicsExporter(){}
      
-     public void exportChart2D(AbstractChart2D chart, String chartArt) {
+	/**
+	 * TODO Documentation
+	 * 
+	 * @param chart
+	 * @param chartArt
+	 */
+     public static void exportChart2D(AbstractChart2D chart, String chartArt) {
         JFileChooser myChooser = new JFileChooser();
         myChooser.setCurrentDirectory(myChooser.getFileSystemView().getHomeDirectory());
         myChooser.setAcceptAllFileFilterUsed(false);
@@ -197,11 +194,11 @@ public class GraphicsExporter {
     }
      }
      
-     /***
-     * Uses to export the lineage tree in several formats;
-     * 
-     */
-    public void exportLineageTree(JScrollPane treePanel) {
+	/**
+	 * 
+	 * @param treePanel
+	 */
+    public static void exportLineageTree(JScrollPane treePanel) {
         JFileChooser chooserTreeExp = new JFileChooser();
         chooserTreeExp.setCurrentDirectory(new java.io.File(System.getProperty("user.home")));
         chooserTreeExp.setMultiSelectionEnabled(false);

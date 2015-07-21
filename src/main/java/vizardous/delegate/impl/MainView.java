@@ -1909,8 +1909,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
     private void exportLineageTreeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportLineageTreeMenuItemActionPerformed
        if(newDataModel != null) { 
             PhyloTreeAnalyser activeWindow = (PhyloTreeAnalyser) extendDesk.getSelectedFrame();
-            GraphicsExporter graphicsExporter = new GraphicsExporter();
-            graphicsExporter.exportLineageTree(activeWindow.getDrawedPhyloTreeList().get(0).getPhyloTreePanel());
+            GraphicsExporter.exportLineageTree(activeWindow.getDrawedPhyloTreeList().get(0).getPhyloTreePanel());
                     
         } else {
              JOptionPane.showMessageDialog(this,
@@ -1973,8 +1972,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
             PhyloTreeAnalyser activeWindow = (PhyloTreeAnalyser) extendDesk.getSelectedFrame();//getAllFramesInLayer(0);
             PopulationDivisionTimesDistributionChart2D divisionTimesDistribution = activeWindow.
                     getDivisionTimeOfPopulationChart2D();
-            GraphicsExporter graphicsExporter = new GraphicsExporter();
-            graphicsExporter.exportChart2D(divisionTimesDistribution, histoChart);
+            GraphicsExporter.exportChart2D(divisionTimesDistribution, histoChart);
                     
         } else {
              JOptionPane.showMessageDialog(this,
@@ -2441,8 +2439,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         if(newDataModel != null) { 
             PhyloTreeAnalyser activeWindow = (PhyloTreeAnalyser) extendDesk.getSelectedFrame();//getAllFramesInLayer(0);
             TraceChart2D yfpFluorscenceChart = activeWindow.getYFPChart();
-            GraphicsExporter graphicsExporter = new GraphicsExporter();
-            graphicsExporter.exportChart2D(yfpFluorscenceChart, lineChart);
+            GraphicsExporter.exportChart2D(yfpFluorscenceChart, lineChart);
             
         } else {
              JOptionPane.showMessageDialog(this,
@@ -2456,8 +2453,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         if(newDataModel != null) { 
             PhyloTreeAnalyser activeWindow = (PhyloTreeAnalyser) extendDesk.getSelectedFrame();
             TraceChart2D crimsonFluorscenceChart = activeWindow.getCrimsonChart();
-            GraphicsExporter graphicsExporter = new GraphicsExporter();
-            graphicsExporter.exportChart2D(crimsonFluorscenceChart, lineChart);
+            GraphicsExporter.exportChart2D(crimsonFluorscenceChart, lineChart);
             
         } else {
              JOptionPane.showMessageDialog(this,
@@ -2471,8 +2467,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         if(newDataModel != null) { 
             PhyloTreeAnalyser activeWindow = (PhyloTreeAnalyser) extendDesk.getSelectedFrame();
             CellLengthDistributionChart2D lengthDistribution = activeWindow.getLengthDistributionChart();
-            GraphicsExporter graphicsExporter = new GraphicsExporter();
-            graphicsExporter.exportChart2D(lengthDistribution, histoChart);
+            GraphicsExporter.exportChart2D(lengthDistribution, histoChart);
                     
         } else {
              JOptionPane.showMessageDialog(this,
@@ -2486,8 +2481,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
        if(newDataModel != null) { 
             PhyloTreeAnalyser activeWindow = (PhyloTreeAnalyser) extendDesk.getSelectedFrame();
             TraceChart2D lengthChart = activeWindow.getLengthChart();
-            GraphicsExporter graphicsExporter = new GraphicsExporter();
-            graphicsExporter.exportChart2D(lengthChart, lineChart);
+            GraphicsExporter.exportChart2D(lengthChart, lineChart);
 
        } else {
              JOptionPane.showMessageDialog(this,
@@ -2501,8 +2495,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         if(newDataModel != null) { 
             PhyloTreeAnalyser activeWindow = (PhyloTreeAnalyser) extendDesk.getSelectedFrame();
             CellAreaDistributionChart2D areaDistribution = activeWindow.getAreaDistributionChart();
-            GraphicsExporter graphicsExporter = new GraphicsExporter();
-            graphicsExporter.exportChart2D(areaDistribution, histoChart);
+            GraphicsExporter.exportChart2D(areaDistribution, histoChart);
                     
         } else {
              JOptionPane.showMessageDialog(this,
@@ -2516,8 +2509,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
       if(newDataModel != null) { 
             PhyloTreeAnalyser activeWindow = (PhyloTreeAnalyser) extendDesk.getSelectedFrame();
             TraceChart2D areaChart = activeWindow.getAreaChart();
-            GraphicsExporter graphicsExporter = new GraphicsExporter();
-            graphicsExporter.exportChart2D(areaChart, lineChart);
+            GraphicsExporter.exportChart2D(areaChart, lineChart);
             
         } else {
              JOptionPane.showMessageDialog(this,
@@ -2531,8 +2523,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
        if(newDataModel != null) { 
             PhyloTreeAnalyser activeWindow = (PhyloTreeAnalyser) extendDesk.getSelectedFrame();
             TraceChart2D cellDivissionTimesChart = activeWindow.getCellDivisionTimesChart();
-            GraphicsExporter graphicsExporter = new GraphicsExporter();
-            graphicsExporter.exportChart2D(cellDivissionTimesChart, lineChart);
+            GraphicsExporter.exportChart2D(cellDivissionTimesChart, lineChart);
             
         } else {
              JOptionPane.showMessageDialog(this,
@@ -2547,8 +2538,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
             PhyloTreeAnalyser activeWindow = (PhyloTreeAnalyser) extendDesk.getSelectedFrame();
             PopulationDivisionTimesDistributionChart2D popDivsionTimesDistribution = activeWindow.
                     getDivisionTimeOfPopulationChart2D();
-            GraphicsExporter graphicsExporter = new GraphicsExporter();
-            graphicsExporter.exportChart2D(popDivsionTimesDistribution, histoChart);
+            GraphicsExporter.exportChart2D(popDivsionTimesDistribution, histoChart);
                     
         } else {
              JOptionPane.showMessageDialog(this,
