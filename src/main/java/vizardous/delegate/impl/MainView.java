@@ -104,7 +104,6 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
     public MainView() {
         fileListToBeImported = new HashMap<File, File>();
         listphyloTreeAnalyser   = new ArrayList<PhyloTreeAnalyser>();           
-        setSize(1150, 700);
         initComponents();
         getDesktopPane();
         jl_seletedFile3.setVisible(false);
@@ -309,10 +308,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         setTitle("Vizardous");
         setBackground(new java.awt.Color(255, 255, 255));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setMaximumSize(new java.awt.Dimension(1280, 1024));
-        setMinimumSize(new java.awt.Dimension(1150, 700));
         setName("mainFrame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(1280, 777));
 
         jToolBar2.setFloatable(false);
         jToolBar2.setRollover(true);
