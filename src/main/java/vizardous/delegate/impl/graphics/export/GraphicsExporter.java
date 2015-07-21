@@ -36,6 +36,7 @@ import vizardous.delegate.impl.fileFilter.PDFFileFilter;
 import vizardous.delegate.impl.fileFilter.PNGFileFilter;
 import vizardous.delegate.impl.fileFilter.SVGFileFilter;
 import vizardous.delegate.impl.graphics.AbstractChart2D;
+import vizardous.delegate.impl.graphics.DistributionChart2D;
 import vizardous.delegate.impl.graphics.TraceChart2D;
 
 /**
@@ -73,8 +74,8 @@ public class GraphicsExporter {
 					String filePath = myChooser.getSelectedFile().getPath();
 					String filterDescription = myChooser.getFileFilter().getDescription();// getChoosableFileFilters();
 
-					/* Remove wrong file extension */
-					if (!FilenameUtils.isExtension(filePath, "pdf")) {
+					/* Remove file extension (that might be wrong) */
+					if (!FilenameUtils.getExtension(filePath).equals("")) {
 						filePath = FilenameUtils.removeExtension(filePath);
 					}
 
@@ -104,12 +105,15 @@ public class GraphicsExporter {
 						if (FilenameUtils.getExtension(filePath).equals("")) {
 							filePath = filePath + ".svg";
 						}
-
-						if (chartArt.equals("line")) {
-							TraceChart2D oo = (TraceChart2D) chart;
-							oo.saveSVG(myChooser.getSelectedFile());
-
-						} else if (chartArt.equals("histogram")) {
+						
+						if (chart instanceof TraceChart2D) {
+//						if (chartArt.equals("line")) {
+							TraceChart2D traceChart = (TraceChart2D) chart;
+							traceChart.saveSVG(myChooser.getSelectedFile());
+						} else if (chart instanceof DistributionChart2D) {
+							DistributionChart2D distributionChart = (DistributionChart2D) chart;
+							distributionChart.saveSVG(myChooser.getSelectedFile());
+//						} else if (chartArt.equals("histogram")) {
 							// TODO export of distribution charts
 
 							// /* Get a DOMImplementation and create an XML
@@ -251,7 +255,7 @@ public class GraphicsExporter {
 						os.flush();
 						os.close();
 					} catch (Exception ex) {
-						GraphicsExporter.logger.error("Lineage tree could not be exported.", ex););
+						GraphicsExporter.logger.error("Lineage tree could not be exported.", ex);
 					}
 				}
 				// export graphic in jpeg format
