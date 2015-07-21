@@ -95,7 +95,7 @@ public class GraphicsExporter {
 						try {
 							ImageIO.write(bi, "png", new File(filePath));
 						} catch (Exception ex) {
-							System.err.println(ex);
+							GraphicsExporter.logger.error("Chart could not be exported.", ex);
 						}
 					}
 					// export graphic in svg format
@@ -170,7 +170,7 @@ public class GraphicsExporter {
 							ImageIO.write(expImage, "jpeg", out);
 							out.close();
 						} catch (Exception ex) {
-							System.err.println(ex);
+							GraphicsExporter.logger.error("Chart could not be exported.", ex);
 						}
 					} else
 						if (filterDescription.equals("Portable Document Format (*.pdf)")) {
@@ -190,8 +190,7 @@ public class GraphicsExporter {
 
 							g2.dispose();
 						} catch (Exception ex) {
-							ex.printStackTrace();
-							System.err.println(ex);
+							GraphicsExporter.logger.error("Chart could not be exported.", ex);
 						} finally {
 							document.close();
 						}
@@ -230,7 +229,7 @@ public class GraphicsExporter {
 					try {
 						ImageIO.write(bi, "png", new File(filePath));
 					} catch (Exception ex) {
-						System.err.println(ex);
+						GraphicsExporter.logger.error("Lineage tree could not be exported.", ex);
 					}
 				}
 				// export graphic in svg format
@@ -252,7 +251,7 @@ public class GraphicsExporter {
 						os.flush();
 						os.close();
 					} catch (Exception ex) {
-						System.err.println(ex);
+						GraphicsExporter.logger.error("Lineage tree could not be exported.", ex););
 					}
 				}
 				// export graphic in jpeg format
@@ -272,7 +271,7 @@ public class GraphicsExporter {
 						ImageIO.write(expImage, "jpeg", out);
 						out.close();
 					} catch (Exception ex) {
-						System.err.println(ex);
+						GraphicsExporter.logger.error("Lineage tree could not be exported.", ex);
 					}
 				}
 				// export graphic in pdf format
@@ -289,7 +288,7 @@ public class GraphicsExporter {
 						g2.dispose();
 						contentByte.addTemplate(template, 0, 0);
 					} catch (Exception ex) {
-						System.err.println(ex);
+						GraphicsExporter.logger.error("Lineage tree could not be exported.", ex);
 					} finally {
 						if (document.isOpen()) {
 							document.close();
