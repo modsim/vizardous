@@ -34,7 +34,7 @@ public class SvgExporter implements LineageExporter, ChartExporter {
 	}
 	
 	@Override
-	public void exportLineage(mxGraphComponent graphComponent, String filePath) {
+	public void exportLineage(mxGraphComponent graphComponent, Clipping clipping, String filePath) {
 	
 		mxSvgCanvas canvas = (mxSvgCanvas) mxCellRenderer.drawCells(graphComponent.getGraph(), null, 1, null, new CanvasFactory() {							
 			public mxICanvas createCanvas(int width, int height) {

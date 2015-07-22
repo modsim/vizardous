@@ -61,6 +61,7 @@ import vizardous.delegate.impl.graphics.CellLengthDistributionChart2D;
 import vizardous.delegate.impl.graphics.ComparisonGrowthRateChart2D;
 import vizardous.delegate.impl.graphics.PopulationDivisionTimesDistributionChart2D;
 import vizardous.delegate.impl.graphics.TraceChart2D;
+import vizardous.delegate.impl.graphics.export.Clipping;
 import vizardous.delegate.impl.graphics.export.GraphicsExporter;
 import vizardous.delegate.impl.graphics.util.PrintUtilities;
 import vizardous.delegate.impl.table.CellsComparisonTable;
@@ -1909,7 +1910,15 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
     private void exportLineageTreeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportLineageTreeMenuItemActionPerformed
        if(newDataModel != null) { 
             PhyloTreeAnalyser activeWindow = (PhyloTreeAnalyser) extendDesk.getSelectedFrame();
-            GraphicsExporter.exportLineageTree(activeWindow.getDrawedPhyloTreeList().get(0).getPhyloTreePanel());
+            
+            if (activeWindow == null) {
+            	JOptionPane.showMessageDialog(this,
+                        "Please select a window for export first.",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE, new javax.swing.ImageIcon(getClass().getResource("/icons/alert_3_32x32.png")));
+            }
+            
+            GraphicsExporter.exportLineageTree(activeWindow.getDrawedPhyloTreeList().get(0).getPhyloTreePanel(), Clipping.NONE);
                     
         } else {
              JOptionPane.showMessageDialog(this,
@@ -1922,6 +1931,14 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
     private void printMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printMenuItemActionPerformed
         if(newDataModel != null) { 
             PhyloTreeAnalyser activeWindow = (PhyloTreeAnalyser) extendDesk.getSelectedFrame();
+            
+            if (activeWindow == null) {
+            	JOptionPane.showMessageDialog(this,
+                        "Please select a window for export first.",
+                        "Warning",
+                        JOptionPane.WARNING_MESSAGE, new javax.swing.ImageIcon(getClass().getResource("/icons/alert_3_32x32.png")));
+            }
+            
             PrintUtilities printDiagramme = new PrintUtilities(activeWindow.getDrawedPhyloTreeList().get(0).getPhyloTreePanel());
             printDiagramme.print();
                     

@@ -33,7 +33,7 @@ public class PngExporter implements LineageExporter, ChartExporter {
 	}
 	
 	@Override
-	public void exportLineage(mxGraphComponent graphComponent, String filePath) {
+	public void exportLineage(mxGraphComponent graphComponent, Clipping clipping, String filePath) {
 		BufferedImage bi = new BufferedImage((int) graphComponent.getBounds().getWidth(), (int) graphComponent.getBounds().getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics g = bi.createGraphics();
 		graphComponent.paint(g);

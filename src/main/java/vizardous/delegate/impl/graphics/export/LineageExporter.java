@@ -3,8 +3,6 @@
  */
 package vizardous.delegate.impl.graphics.export;
 
-import javax.swing.JScrollPane;
-
 import com.mxgraph.swing.mxGraphComponent;
 
 /**
@@ -15,5 +13,5 @@ import com.mxgraph.swing.mxGraphComponent;
 public interface LineageExporter extends Exporter {
 	
 	/** TODO Documentation */
-	public void exportLineage(mxGraphComponent graphComponent, String filePath);
+	public void exportLineage(mxGraphComponent graphComponent, Clipping clipping, String filePath);
 }

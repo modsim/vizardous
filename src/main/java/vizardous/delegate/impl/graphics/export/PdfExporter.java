@@ -10,6 +10,7 @@ import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
 import com.mxgraph.canvas.mxGraphics2DCanvas;
 import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.swing.mxGraphComponent.mxGraphControl;
 import com.mxgraph.view.mxGraph;
 import com.mxgraph.view.mxGraphView;
 
@@ -42,11 +43,31 @@ public class PdfExporter implements LineageExporter, ChartExporter {
 	}
 
 	@Override
-	public void exportLineage(mxGraphComponent graphComponent, String filePath) {
+	public void exportLineage(mxGraphComponent graphComponent, Clipping clipping, String filePath) {
 		
 		mxGraph graph = graphComponent.getGraph();		
 		Object[] cells = new Object[] { graph.getModel().getRoot() };		
-		java.awt.Rectangle rect = graph.getPaintBounds(cells).getRectangle();
+		mxGraphControl graphControl = graphComponent.getGraphControl();
+		
+		java.awt.Rectangle rect = null;
+		
+		switch (clipping) {
+		case VIEWPORT:
+			/* Just export the current viewport */
+			int width = graphComponent.getWidth();
+			int height = graphComponent.getHeight();
+			int x = -graphControl.getX();
+			int y = -graphControl.getY();
+			
+			rect = new java.awt.Rectangle(x, y, width, height);
+			break;
+		case NONE:
+		default:
+			/* Take the zoom level and export the complete tree */
+			rect = graph.getPaintBounds(cells).getRectangle();
+			break;
+		}
+		
 		
 		Document document = new Document(new Rectangle((float) rect.getWidth(), (float) rect.getHeight()), 0, 0, 0, 0);
 		try {

@@ -102,7 +102,7 @@ public class GraphicsExporter {
 	 * 
 	 * @param treePanel
 	 */
-	public static void exportLineageTree(mxGraphComponent graphComponent) {
+	public static void exportLineageTree(mxGraphComponent graphComponent, Clipping clipping) {
 		JFileChooser chooserTreeExp = new JFileChooser();
 		chooserTreeExp.setCurrentDirectory(new java.io.File(System.getProperty("user.home")));
 		chooserTreeExp.setMultiSelectionEnabled(false);
@@ -131,7 +131,7 @@ public class GraphicsExporter {
 					filePath = filePath + exporter.getFileExtension();
 				}
 				
-				exporter.exportLineage(graphComponent, filePath);				
+				exporter.exportLineage(graphComponent, clipping, filePath);				
 			} // if-SelectFile
 		} // iF-ApproveOpt.
 	}

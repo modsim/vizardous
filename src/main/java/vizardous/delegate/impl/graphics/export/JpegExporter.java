@@ -41,7 +41,7 @@ public class JpegExporter implements LineageExporter, ChartExporter {
 	}
 
 	@Override
-	public void exportLineage(mxGraphComponent graphComponent, String filePath) {
+	public void exportLineage(mxGraphComponent graphComponent, Clipping clipping, String filePath) {
 		BufferedImage expImage = new BufferedImage(graphComponent.getWidth(), graphComponent.getHeight(), BufferedImage.TYPE_INT_RGB);
 		/*
 		 * Print to Image, scaling if necessary.

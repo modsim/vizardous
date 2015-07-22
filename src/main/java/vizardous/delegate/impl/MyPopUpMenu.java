@@ -4,32 +4,20 @@
  */
 package vizardous.delegate.impl;
 
+import vizardous.delegate.impl.graphics.export.Clipping;
+import vizardous.delegate.impl.graphics.export.GraphicsExporter;
 import vizardous.delegate.impl.graphics.util.PrintUtilities;
 import vizardous.delegate.impl.analysis.PhyloTreesDepthAnalysis;
 
-import com.lowagie.text.PageSize;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfTemplate;
-import com.lowagie.text.pdf.PdfWriter;
 import com.mxgraph.swing.mxGraphComponent;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.List;
 import java.util.Locale;
 
-import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -39,14 +27,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.ScrollPaneConstants;
 
-import org.apache.batik.dom.GenericDOMImplementation;
-import org.apache.batik.svggen.SVGGraphics2D;
-import org.w3c.dom.DOMImplementation;
-
-import vizardous.delegate.impl.fileFilter.JPEGFileFilter;
-import vizardous.delegate.impl.fileFilter.PDFFileFilter;
-import vizardous.delegate.impl.fileFilter.PNGFileFilter;
-import vizardous.delegate.impl.fileFilter.SVGFileFilter;
 import vizardous.delegate.impl.table.CellsInformationTable;
 import vizardous.delegate.impl.treeSort.sorter.SortParam;
 import vizardous.delegate.impl.treeSort.sorter.SortType;
@@ -157,14 +137,24 @@ public class MyPopUpMenu extends JPopupMenu {
 		});
 
         //exportMenuItem
-        JMenuItem exportMenuItem = new JMenuItem("Export phyloTree as...", 
-                new javax.swing.ImageIcon(getClass().getResource("/icons16x16/treeChart16x16.png")));
-        exportMenuItem.addActionListener(new ActionListener() {
+        JMenuItem exportLineageTreeViewportMenuItem = new JMenuItem("Export Lineage Tree (viewport)", new javax.swing.ImageIcon(getClass().getResource("/icons16x16/treeChart16x16.png")));
+        exportLineageTreeViewportMenuItem.addActionListener(new ActionListener() {
             
             @Override
             public void actionPerformed(ActionEvent event) {
                 JFileChooser.setDefaultLocale(loc);
-                exportPhylogeneticTree();
+                GraphicsExporter.exportLineageTree(graphComponent, Clipping.VIEWPORT);
+           }
+        });
+        
+        //exportMenuItem
+        JMenuItem exportLineageTreeCompleteMenuItem = new JMenuItem("Export Lineage Tree (complete)", new javax.swing.ImageIcon(getClass().getResource("/icons16x16/treeChart16x16.png")));
+        exportLineageTreeCompleteMenuItem.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                JFileChooser.setDefaultLocale(loc);
+                GraphicsExporter.exportLineageTree(graphComponent, Clipping.NONE);
            }
         });
         
@@ -335,7 +325,8 @@ public class MyPopUpMenu extends JPopupMenu {
        this.addSeparator();
        this.add(treeLayoutMenu);
        this.addSeparator();
-       this.add(exportMenuItem);
+       this.add(exportLineageTreeViewportMenuItem);
+       this.add(exportLineageTreeCompleteMenuItem);
        this.addSeparator();
        this.add(printMenuItem);
 //       this.show(mouseEvent.getComponent(), mouseEvent.getX(), mouseEvent.getY());
@@ -419,110 +410,5 @@ public class MyPopUpMenu extends JPopupMenu {
     	 treePanel.revalidate();
     	 treePanel.repaint();
      }*/
-    
-    /***
-     * Uses to export the phylogeny tree in several formats;
-     * 
-     */
-    public void exportPhylogeneticTree() {
-        JFileChooser chooserTreeExp = new JFileChooser();
-        chooserTreeExp.setCurrentDirectory(new java.io.File(System.getProperty("user.home")));
-        chooserTreeExp.setMultiSelectionEnabled(false);
-        chooserTreeExp.setAcceptAllFileFilterUsed(false);
-        chooserTreeExp.addChoosableFileFilter(new PNGFileFilter());
-        chooserTreeExp.addChoosableFileFilter(new SVGFileFilter());
-        chooserTreeExp.addChoosableFileFilter(new JPEGFileFilter());
-        chooserTreeExp.addChoosableFileFilter(new PDFFileFilter());
-        int option = chooserTreeExp.showSaveDialog(graphComponent);
-        if(option == JFileChooser.APPROVE_OPTION) {
-            if(chooserTreeExp.getSelectedFile() != null) {
-            String filePath = chooserTreeExp.getSelectedFile().getPath();
-            String filterDescription = chooserTreeExp.getFileFilter().getDescription();//getChoosableFileFilters();
-            BufferedImage bi = new BufferedImage((int) graphComponent.getBounds().getWidth(), 
-                        (int) graphComponent.getBounds().getHeight(), BufferedImage.TYPE_INT_ARGB); 
-                Graphics g = bi.createGraphics();
-
-            // export graphic in png format
-            if(filterDescription.equals("Portable Network Graphics (*.png)")) {
-                filePath = filePath + ".png";
-                graphComponent.paint(g);  
-                g.dispose();
-                try {
-                    ImageIO.write(bi,"png",new File(filePath));
-                } catch (Exception ex) {
-                    System.err.println(ex);
-                }
-            }
-            // export graphic in svg format
-            else if (filterDescription.equals("Scalable Vector Graphics (*.svg)")) {
-                filePath = filePath + ".svg";
-                //----------------------
-                DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
-                org.w3c.dom.Document document = domImpl.createDocument(null, "svg", null);
-                SVGGraphics2D svgGenerator = new SVGGraphics2D(document);
-                // TODO Think what's the best to take: the size of viewing panel or the size og drawing tree
-                svgGenerator.setSVGCanvasSize(new Dimension(graphComponent.getWidth(), graphComponent.getHeight()));
-                boolean useCSS=true;
-                try {
-                        FileOutputStream os = new FileOutputStream(new File(filePath));
-                        Writer out = new OutputStreamWriter(os, "UTF-8");
-                        graphComponent.paint(svgGenerator);
-                        svgGenerator.stream(out, useCSS);
-                        os.flush();
-                        os.close();
-                } catch (Exception ex) {
-                        System.err.println(ex);
-                }
-            }
-            // export graphic in jpeg format
-            else if (filterDescription.equals("Portable Document Format (*.jpeg)")) {
-                filePath = filePath + ".jpeg";
-                BufferedImage expImage = new BufferedImage(graphComponent.getWidth(),
-                		graphComponent.getHeight(),BufferedImage.TYPE_INT_RGB);
-                /*
-                 * Print to Image, scaling if necessary.
-                 */
-                Graphics2D g2 = expImage.createGraphics();
-                graphComponent.paint(g2);
-                /*
-                 * Write to File
-                 */
-                try {
-                    OutputStream out = new FileOutputStream(filePath);
-                    ImageIO.write(expImage, "jpeg", out);
-                    out.close();
-                } catch (Exception ex) {
-                         System.err.println(ex);
-                }
-            }
-            // export graphic in pdf format
-            else if(filterDescription.equals("Portable Document Format (*.pdf)")) {
-                filePath = filePath + ".pdf";
-                com.lowagie.text.Document document = new com.lowagie.text.Document(PageSize.A3.rotate(),0, 0, 0, 0);
-               try {
-                      PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File(filePath)));
-                      document.open();
-                      PdfContentByte contentByte = writer.getDirectContent();
-                      PdfTemplate template = contentByte.createTemplate(
-                              graphComponent.getWidth(), 
-                              graphComponent.getHeight());
-                      Graphics2D g2 = template.createGraphics( 
-                    		  graphComponent.getWidth(), 
-                    		  graphComponent.getHeight());
-                      graphComponent.print(g2);
-                      g2.dispose();
-                      contentByte.addTemplate(template, 0, 0);
-                  } catch (Exception ex) {
-                      System.err.println(ex);
-                  }
-                  finally {
-                    if(document.isOpen()) {
-                        document.close();
-                    }
-                 }
-            }//if-PDF
-          }//if-SelectFile
-         }//iF-ApproveOpt.
-      }
     
 }
