@@ -21,7 +21,7 @@ import vizardous.delegate.impl.graphics.AbstractChart2D;
  * 
  * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
  */
-public class PdfExporter implements LineageExporter, ChartExporter {
+public class PdfExporter implements LineageExporter, ChartExporter, VectorExporter {
 	
 	@Override
 	public void exportChart(AbstractChart2D chart, String filePath) {

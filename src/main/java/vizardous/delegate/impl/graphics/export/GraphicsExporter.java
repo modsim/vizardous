@@ -5,21 +5,15 @@
 package vizardous.delegate.impl.graphics.export;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mxgraph.swing.mxGraphComponent;
 
-import vizardous.delegate.impl.DrawPhyloTreeGraph;
-import vizardous.delegate.impl.MainView;
 import vizardous.delegate.impl.fileFilter.JPEGFileFilter;
 import vizardous.delegate.impl.fileFilter.PDFFileFilter;
 import vizardous.delegate.impl.fileFilter.PNGFileFilter;

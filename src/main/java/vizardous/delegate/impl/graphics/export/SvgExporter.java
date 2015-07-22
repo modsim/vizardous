@@ -20,7 +20,7 @@ import vizardous.delegate.impl.graphics.TraceChart2D;
  * 
  * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
  */
-public class SvgExporter implements LineageExporter, ChartExporter {
+public class SvgExporter implements LineageExporter, ChartExporter, VectorExporter {
 	
 	@Override
 	public void exportChart(AbstractChart2D chart, String filePath) {
