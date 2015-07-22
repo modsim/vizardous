@@ -1,14 +1,17 @@
 package vizardous.delegate.impl.graphics.export;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.io.File;
 import java.io.FileOutputStream;
-
-import com.lowagie.text.PageSize;
+import com.lowagie.text.Document;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
+import com.mxgraph.canvas.mxGraphics2DCanvas;
 import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.view.mxGraph;
+import com.mxgraph.view.mxGraphView;
 
 import vizardous.delegate.impl.graphics.AbstractChart2D;
 
@@ -21,7 +24,7 @@ public class PdfExporter implements LineageExporter, ChartExporter {
 	
 	@Override
 	public void exportChart(AbstractChart2D chart, String filePath) {
-		com.lowagie.text.Document document = new com.lowagie.text.Document(new Rectangle(0f, 0f, (float) chart.getWidth(), (float) chart.getHeight()), 0, 0, 0, 0);
+		Document document = new Document(new Rectangle(0f, 0f, (float) chart.getWidth(), (float) chart.getHeight()), 0, 0, 0, 0);
 		try {
 			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
 			document.open();
@@ -40,14 +43,44 @@ public class PdfExporter implements LineageExporter, ChartExporter {
 
 	@Override
 	public void exportLineage(mxGraphComponent graphComponent, String filePath) {
-		com.lowagie.text.Document document = new com.lowagie.text.Document(PageSize.A3.rotate(), 0, 0, 0, 0);
+		
+		mxGraph graph = graphComponent.getGraph();		
+		Object[] cells = new Object[] { graph.getModel().getRoot() };		
+		java.awt.Rectangle rect = graph.getPaintBounds(cells).getRectangle();
+		
+		Document document = new Document(new Rectangle((float) rect.getWidth(), (float) rect.getHeight()), 0, 0, 0, 0);
 		try {
 			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File(filePath)));
 			document.open();
 			PdfContentByte contentByte = writer.getDirectContent();
 			
-			Graphics2D g2 = contentByte.createGraphics(graphComponent.getWidth(), graphComponent.getHeight());
-			graphComponent.paint(g2);
+			final Graphics2D g2 = contentByte.createGraphics((float) rect.getWidth(), (float) rect.getHeight());
+			
+			mxGraphics2DCanvas canvas = new mxGraphics2DCanvas(g2);
+			mxGraphView view = graph.getView();
+
+			// TODO Figure out, why the original code does not work
+			/* The following lines of code are from mxCellRenderer.java:L75 */
+			double previousScale = canvas.getScale();
+			Point previousTranslate = canvas.getTranslate();
+
+			try
+			{
+				canvas.setTranslate(-rect.x, -rect.y);
+				canvas.setScale(view.getScale());
+
+				for (int i = 0; i < cells.length; i++)
+				{
+					graph.drawCell(canvas, cells[i]);
+				}
+			}
+			finally
+			{
+				canvas.setScale(previousScale);
+				canvas.setTranslate(previousTranslate.x,
+						previousTranslate.y);
+			}
+			/* End of copy from mxCellRenderer.java */
 			
 			g2.dispose();
 		} catch (Exception ex) {
