@@ -19,6 +19,8 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
@@ -52,6 +54,16 @@ public class GraphicsExporter {
 	/** The {@link Logger} for this class. */
     final static Logger logger = LoggerFactory.getLogger(GraphicsExporter.class);
 	
+    /** */
+    final static Map<String, ChartExporter> exporters = new HashMap<String, ChartExporter>();
+    
+    static {
+    	exporters.put("Portable Network Graphics (*.png)", new PngExporter());
+    	exporters.put("Scalable Vector Graphics (*.svg)", new SvgExporter());
+    	exporters.put("Joint Photographic Experts Group Format (*.jpeg)", new JpegExporter());
+    	exporters.put("Portable Document Format (*.pdf)", new PdfExporter());
+    }
+    
 	/**
 	 * TODO Documentation
 	 * 
@@ -73,132 +85,21 @@ public class GraphicsExporter {
 				if (myChooser.getSelectedFile() != null) {
 					String filePath = myChooser.getSelectedFile().getPath();
 					String filterDescription = myChooser.getFileFilter().getDescription();// getChoosableFileFilters();
-
+					
 					/* Remove file extension (that might be wrong) */
 					if (!FilenameUtils.getExtension(filePath).equals("")) {
 						filePath = FilenameUtils.removeExtension(filePath);
 					}
-
-					// export graphic in png format
-					if (filterDescription.equals("Portable Network Graphics (*.png)")) {
-						/* Add correct extension (.png) */
-						if (FilenameUtils.getExtension(filePath).equals("")) {
-							filePath = filePath + ".png";
-						}
-
-						BufferedImage bi = new BufferedImage((int) chart.getBounds().getWidth(), (int) chart.getBounds().getHeight(), BufferedImage.TYPE_INT_ARGB);
-						Graphics g = bi.createGraphics();
-						chart.addNotify();
-						chart.setVisible(true);
-						chart.validate();
-						chart.paint(g); // this == JComponent
-						g.dispose();
-						try {
-							ImageIO.write(bi, "png", new File(filePath));
-						} catch (Exception ex) {
-							GraphicsExporter.logger.error("Chart could not be exported.", ex);
-						}
+					
+					/* Get exporter for FileFilter */
+					ChartExporter exporter = exporters.get(filterDescription);
+					
+					/* Get correct extension for the exporter */
+					if (FilenameUtils.getExtension(filePath).equals("")) {
+						filePath = filePath + exporter.getFileExtension();
 					}
-					// export graphic in svg format
-					else if (filterDescription.equals("Scalable Vector Graphics (*.svg)")) {
-						/* Add correct extension (.svg) */
-						if (FilenameUtils.getExtension(filePath).equals("")) {
-							filePath = filePath + ".svg";
-						}
-						
-						if (chart instanceof TraceChart2D) {
-//						if (chartArt.equals("line")) {
-							TraceChart2D traceChart = (TraceChart2D) chart;
-							traceChart.saveSVG(myChooser.getSelectedFile());
-						} else if (chart instanceof DistributionChart2D) {
-							DistributionChart2D distributionChart = (DistributionChart2D) chart;
-							distributionChart.saveSVG(myChooser.getSelectedFile());
-//						} else if (chartArt.equals("histogram")) {
-							// TODO export of distribution charts
-
-							// /* Get a DOMImplementation and create an XML
-							// document */
-							// DOMImplementation domImpl =
-							// GenericDOMImplementation.getDOMImplementation();
-							// Document document = domImpl.createDocument(null,
-							// "svg", null);
-							//
-							// /* Draw the chart in the SVG generator */
-							// SVGGraphics2D svgGenerator = new
-							// SVGGraphics2D(document);
-							// chart.paint(svgGenerator);
-							//
-							// /* Write SVG file */
-							// try {
-							// OutputStream outputStream = new
-							// FileOutputStream(new File(filePath));
-							// Writer out = new OutputStreamWriter(outputStream,
-							// "UTF-8");
-							// svgGenerator.stream(out, true /* use css */);
-							// outputStream.flush();
-							// outputStream.close();
-							// } catch (FileNotFoundException e) {
-							// // TODO Logging
-							// e.printStackTrace();
-							// } catch (UnsupportedEncodingException e) {
-							// // TODO Logging
-							// e.printStackTrace();
-							// } catch (IOException e) {
-							// // TODO Logging
-							// e.printStackTrace();
-							// }
-						}
-					}
-
-					// export graphic in jpeg format
-					else if (filterDescription.equals("Joint Photographic Experts Group Format (*.jpeg)")) {
-						/* Add correct extension (.jpeg) */
-						if (FilenameUtils.getExtension(filePath).equals("")) {
-							filePath = filePath + ".jpeg";
-						}
-
-						BufferedImage expImage = new BufferedImage(chart.getWidth(), chart.getHeight(), BufferedImage.TYPE_INT_RGB);
-						/*
-						 * Print to Image, scaling if necessary.
-						 */
-						Graphics2D g2 = expImage.createGraphics();
-						chart.addNotify();
-						chart.setVisible(true);
-						chart.validate();
-						chart.paint(g2);
-						/*
-						 * Write to File
-						 */
-						try {
-							OutputStream out = new FileOutputStream(filePath);
-							ImageIO.write(expImage, "jpeg", out);
-							out.close();
-						} catch (Exception ex) {
-							GraphicsExporter.logger.error("Chart could not be exported.", ex);
-						}
-					} else
-						if (filterDescription.equals("Portable Document Format (*.pdf)")) {
-						/* Add correct extension (.pdf) */
-						if (FilenameUtils.getExtension(filePath).equals("")) {
-							filePath = filePath + ".pdf";
-						}
-
-						com.lowagie.text.Document document = new com.lowagie.text.Document(new Rectangle(0f, 0f, (float) chart.getWidth(), (float) chart.getHeight()), 0, 0, 0, 0);
-						try {
-							PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File(filePath)));
-							document.open();
-							PdfContentByte contentByte = writer.getDirectContent();
-							Graphics2D g2 = contentByte.createGraphics(chart.getWidth(), chart.getHeight());
-
-							chart.getChart().draw(g2, new java.awt.Rectangle(chart.getWidth(), chart.getHeight()));
-
-							g2.dispose();
-						} catch (Exception ex) {
-							GraphicsExporter.logger.error("Chart could not be exported.", ex);
-						} finally {
-							document.close();
-						}
-					} // if-PDF
+					
+					exporter.exportChart(chart, filePath);
 				} // if-SelectFile
 			} // iF-ApproveOpt.
 		}
