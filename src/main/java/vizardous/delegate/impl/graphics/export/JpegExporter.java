@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
+import javax.swing.JScrollPane;
 
 import vizardous.delegate.impl.graphics.AbstractChart2D;
 
@@ -15,10 +16,10 @@ import vizardous.delegate.impl.graphics.AbstractChart2D;
  * 
  * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
  */
-public class JpegExporter extends ChartExporter {
+public class JpegExporter implements LineageExporter, ChartExporter {
 	
 	@Override
-	public void exportChart(AbstractChart2D chart, File file) {
+	public void exportChart(AbstractChart2D chart, String filePath) {
 		BufferedImage expImage = new BufferedImage(chart.getWidth(), chart.getHeight(), BufferedImage.TYPE_INT_RGB);
 		/*
 		 * Print to Image, scaling if necessary.
@@ -32,7 +33,7 @@ public class JpegExporter extends ChartExporter {
 		 * Write to File
 		 */
 		try {
-			OutputStream out = new FileOutputStream(file);
+			OutputStream out = new FileOutputStream(filePath);
 			ImageIO.write(expImage, "jpeg", out);
 			out.close();
 		} catch (Exception ex) {
@@ -41,8 +42,28 @@ public class JpegExporter extends ChartExporter {
 	}
 
 	@Override
+	public void exportLineage(JScrollPane treePanel, String filePath) {
+		BufferedImage expImage = new BufferedImage(treePanel.getWidth(), treePanel.getHeight(), BufferedImage.TYPE_INT_RGB);
+		/*
+		 * Print to Image, scaling if necessary.
+		 */
+		Graphics2D g2 = expImage.createGraphics();
+		treePanel.paint(g2);
+		/*
+		 * Write to File
+		 */
+		try {
+			OutputStream out = new FileOutputStream(filePath);
+			ImageIO.write(expImage, "jpeg", out);
+			out.close();
+		} catch (Exception ex) {
+			GraphicsExporter.logger.error("Lineage tree could not be exported.", ex);
+		}
+	}
+
+	@Override
 	public String getFileExtension() {
 		return ".jpeg";
 	}
-
+	
 }
