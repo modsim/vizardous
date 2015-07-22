@@ -1,16 +1,15 @@
 package vizardous.delegate.impl.graphics.export;
 
-import java.awt.Dimension;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-
-import javax.swing.JScrollPane;
-
-import org.apache.batik.dom.GenericDOMImplementation;
-import org.apache.batik.svggen.SVGGraphics2D;
-import org.w3c.dom.DOMImplementation;
+import java.io.IOException;
+import com.mxgraph.canvas.mxICanvas;
+import com.mxgraph.canvas.mxSvgCanvas;
+import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.util.mxCellRenderer;
+import com.mxgraph.util.mxDomUtils;
+import com.mxgraph.util.mxUtils;
+import com.mxgraph.util.mxXmlUtils;
+import com.mxgraph.util.mxCellRenderer.CanvasFactory;
 
 import vizardous.delegate.impl.graphics.AbstractChart2D;
 import vizardous.delegate.impl.graphics.DistributionChart2D;
@@ -33,25 +32,22 @@ public class SvgExporter implements LineageExporter, ChartExporter {
 			distributionChart.saveSVG(new File(filePath));
 		}
 	}
-
+	
 	@Override
-	public void exportLineage(JScrollPane treePanel, String filePath) {
-		DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
-		org.w3c.dom.Document document = domImpl.createDocument(null, "svg", null);
-		SVGGraphics2D svgGenerator = new SVGGraphics2D(document);
-		// TODO Think what's the best to take: the size of viewing
-		// panel or the size og drawing tree
-		svgGenerator.setSVGCanvasSize(new Dimension(treePanel.getWidth(), treePanel.getHeight()));
-		boolean useCSS = true;
+	public void exportLineage(mxGraphComponent graphComponent, String filePath) {
+	
+		mxSvgCanvas canvas = (mxSvgCanvas) mxCellRenderer.drawCells(graphComponent.getGraph(), null, 1, null, new CanvasFactory() {							
+			public mxICanvas createCanvas(int width, int height) {
+				mxSvgCanvas canvas = new mxSvgCanvas(mxDomUtils.createSvgDocument(width, height));
+				canvas.setEmbedded(true);
+
+				return canvas;
+			}});
+
 		try {
-			FileOutputStream os = new FileOutputStream(new File(filePath));
-			Writer out = new OutputStreamWriter(os, "UTF-8");
-			treePanel.paint(svgGenerator);
-			svgGenerator.stream(out, useCSS);
-			os.flush();
-			os.close();
-		} catch (Exception ex) {
-			GraphicsExporter.logger.error("Lineage tree could not be exported.", ex);
+			mxUtils.writeFile(mxXmlUtils.getXml(canvas.getDocument()), filePath);
+		} catch (IOException e) {
+			GraphicsExporter.logger.error("Lineage tree could not be exported.", e);
 		}
 	}
 	

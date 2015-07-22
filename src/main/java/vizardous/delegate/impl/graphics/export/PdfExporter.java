@@ -4,13 +4,11 @@ import java.awt.Graphics2D;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import javax.swing.JScrollPane;
-
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
+import com.mxgraph.swing.mxGraphComponent;
 
 import vizardous.delegate.impl.graphics.AbstractChart2D;
 
@@ -41,17 +39,17 @@ public class PdfExporter implements LineageExporter, ChartExporter {
 	}
 
 	@Override
-	public void exportLineage(JScrollPane treePanel, String filePath) {
+	public void exportLineage(mxGraphComponent graphComponent, String filePath) {
 		com.lowagie.text.Document document = new com.lowagie.text.Document(PageSize.A3.rotate(), 0, 0, 0, 0);
 		try {
 			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File(filePath)));
 			document.open();
 			PdfContentByte contentByte = writer.getDirectContent();
-			PdfTemplate template = contentByte.createTemplate(treePanel.getWidth(), treePanel.getHeight());
-			Graphics2D g2 = template.createGraphics(treePanel.getWidth(), treePanel.getHeight());
-			treePanel.print(g2);
+			
+			Graphics2D g2 = contentByte.createGraphics(graphComponent.getWidth(), graphComponent.getHeight());
+			graphComponent.paint(g2);
+			
 			g2.dispose();
-			contentByte.addTemplate(template, 0, 0);
 		} catch (Exception ex) {
 			GraphicsExporter.logger.error("Lineage tree could not be exported.", ex);
 		} finally {

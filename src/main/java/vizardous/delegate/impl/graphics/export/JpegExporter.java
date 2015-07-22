@@ -2,12 +2,11 @@ package vizardous.delegate.impl.graphics.export;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
-import javax.swing.JScrollPane;
+import com.mxgraph.swing.mxGraphComponent;
 
 import vizardous.delegate.impl.graphics.AbstractChart2D;
 
@@ -42,13 +41,13 @@ public class JpegExporter implements LineageExporter, ChartExporter {
 	}
 
 	@Override
-	public void exportLineage(JScrollPane treePanel, String filePath) {
-		BufferedImage expImage = new BufferedImage(treePanel.getWidth(), treePanel.getHeight(), BufferedImage.TYPE_INT_RGB);
+	public void exportLineage(mxGraphComponent graphComponent, String filePath) {
+		BufferedImage expImage = new BufferedImage(graphComponent.getWidth(), graphComponent.getHeight(), BufferedImage.TYPE_INT_RGB);
 		/*
 		 * Print to Image, scaling if necessary.
 		 */
 		Graphics2D g2 = expImage.createGraphics();
-		treePanel.paint(g2);
+		graphComponent.paint(g2);
 		/*
 		 * Write to File
 		 */

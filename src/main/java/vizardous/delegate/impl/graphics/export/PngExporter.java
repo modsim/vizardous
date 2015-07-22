@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
-import javax.swing.JScrollPane;
+import com.mxgraph.swing.mxGraphComponent;
 
 import vizardous.delegate.impl.graphics.AbstractChart2D;
 
@@ -33,10 +33,10 @@ public class PngExporter implements LineageExporter, ChartExporter {
 	}
 	
 	@Override
-	public void exportLineage(JScrollPane treePanel, String filePath) {
-		BufferedImage bi = new BufferedImage((int) treePanel.getBounds().getWidth(), (int) treePanel.getBounds().getHeight(), BufferedImage.TYPE_INT_ARGB);
+	public void exportLineage(mxGraphComponent graphComponent, String filePath) {
+		BufferedImage bi = new BufferedImage((int) graphComponent.getBounds().getWidth(), (int) graphComponent.getBounds().getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics g = bi.createGraphics();
-		treePanel.paint(g);
+		graphComponent.paint(g);
 		g.dispose();
 		try {
 			ImageIO.write(bi, "png", new File(filePath));
