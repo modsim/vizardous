@@ -2,6 +2,9 @@ package vizardous.delegate.impl.graphics.export;
 
 import java.io.File;
 import java.io.IOException;
+
+import javax.swing.filechooser.FileFilter;
+
 import com.mxgraph.canvas.mxICanvas;
 import com.mxgraph.canvas.mxSvgCanvas;
 import com.mxgraph.swing.mxGraphComponent;
@@ -11,6 +14,7 @@ import com.mxgraph.util.mxUtils;
 import com.mxgraph.util.mxXmlUtils;
 import com.mxgraph.util.mxCellRenderer.CanvasFactory;
 
+import vizardous.delegate.impl.fileFilter.SVGFileFilter;
 import vizardous.delegate.impl.graphics.AbstractChart2D;
 import vizardous.delegate.impl.graphics.DistributionChart2D;
 import vizardous.delegate.impl.graphics.TraceChart2D;
@@ -54,6 +58,11 @@ public class SvgExporter implements LineageExporter, ChartExporter, VectorExport
 	@Override
 	public String getFileExtension() {
 		return ".svg";
+	}
+
+	@Override
+	public FileFilter getFileFilter() {
+		return new SVGFileFilter();
 	}
 
 }

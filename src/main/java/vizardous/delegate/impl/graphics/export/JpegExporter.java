@@ -6,8 +6,11 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
+import javax.swing.filechooser.FileFilter;
+
 import com.mxgraph.swing.mxGraphComponent;
 
+import vizardous.delegate.impl.fileFilter.JPEGFileFilter;
 import vizardous.delegate.impl.graphics.AbstractChart2D;
 
 /**
@@ -63,6 +66,11 @@ public class JpegExporter implements LineageExporter, ChartExporter, BitmapExpor
 	@Override
 	public String getFileExtension() {
 		return ".jpeg";
+	}
+
+	@Override
+	public FileFilter getFileFilter() {
+		return new JPEGFileFilter();
 	}
 	
 }

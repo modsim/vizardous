@@ -4,6 +4,9 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.io.File;
 import java.io.FileOutputStream;
+
+import javax.swing.filechooser.FileFilter;
+
 import com.lowagie.text.Document;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfContentByte;
@@ -14,6 +17,7 @@ import com.mxgraph.swing.mxGraphComponent.mxGraphControl;
 import com.mxgraph.view.mxGraph;
 import com.mxgraph.view.mxGraphView;
 
+import vizardous.delegate.impl.fileFilter.PDFFileFilter;
 import vizardous.delegate.impl.graphics.AbstractChart2D;
 
 /**
@@ -116,6 +120,11 @@ public class PdfExporter implements LineageExporter, ChartExporter, VectorExport
 	@Override
 	public String getFileExtension() {
 		return ".pdf";
+	}
+
+	@Override
+	public FileFilter getFileFilter() {
+		return new PDFFileFilter();
 	}
 	
 }

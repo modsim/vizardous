@@ -1,5 +1,7 @@
 package vizardous.delegate.impl.graphics.export;
 
+import javax.swing.filechooser.FileFilter;
+
 /**
  * TODO Documentation
  * 
@@ -9,4 +11,7 @@ public interface Exporter {
 	
 	/** TODO Documentation */
 	public String getFileExtension();
+	
+	/** TODO Documentation */
+	public FileFilter getFileFilter();
 }

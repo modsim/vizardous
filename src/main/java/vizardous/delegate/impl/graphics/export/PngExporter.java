@@ -5,8 +5,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
+import javax.swing.filechooser.FileFilter;
+
 import com.mxgraph.swing.mxGraphComponent;
 
+import vizardous.delegate.impl.fileFilter.PNGFileFilter;
 import vizardous.delegate.impl.graphics.AbstractChart2D;
 
 /**
@@ -48,6 +51,11 @@ public class PngExporter implements LineageExporter, ChartExporter, BitmapExport
 	@Override
 	public String getFileExtension() {
 		return ".png";
+	}
+
+	@Override
+	public FileFilter getFileFilter() {
+		return new PNGFileFilter();
 	}
 
 }
