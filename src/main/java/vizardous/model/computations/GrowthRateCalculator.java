@@ -11,11 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import vizardous.delegate.impl.MainView;
-import vizardous.delegate.impl.MetaXMLException;
-import vizardous.delegate.impl.PhyloXMLException;
 import vizardous.model.impl.DataModel;
 import vizardous.model.impl.Forest;
 import vizardous.model.impl.MIFrame;
+import vizardous.model.impl.MetaXMLException;
+import vizardous.model.impl.PhyloXMLException;
 
 /**
  * TODO

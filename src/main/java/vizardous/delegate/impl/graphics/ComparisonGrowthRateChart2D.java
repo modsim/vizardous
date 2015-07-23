@@ -4,6 +4,8 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 
 import vizardous.model.impl.MIFrame;
+import vizardous.model.impl.MetaXMLException;
+import vizardous.model.impl.PhyloXMLException;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -38,8 +40,6 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RectangleEdge;
 
-import vizardous.delegate.impl.MetaXMLException;
-import vizardous.delegate.impl.PhyloXMLException;
 import vizardous.delegate.impl.graphics.util.ColorIcon;
 import vizardous.model.computations.GrowthRateCalculator;
 import vizardous.model.impl.Cell;

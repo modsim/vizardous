@@ -1,4 +1,4 @@
-package vizardous.delegate.impl;
+package vizardous.model.impl;
 
 /**
  * TODO Documentation

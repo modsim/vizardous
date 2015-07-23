@@ -30,8 +30,6 @@ import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import vizardous.delegate.impl.MetaXMLException;
-import vizardous.delegate.impl.PhyloXMLException;
 
 /**
  * This class represents a Forest. 

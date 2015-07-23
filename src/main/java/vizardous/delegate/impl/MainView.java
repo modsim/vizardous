@@ -68,6 +68,8 @@ import vizardous.delegate.impl.table.CellsComparisonTable;
 import vizardous.model.impl.Cell;
 import vizardous.model.impl.DataModel;
 import vizardous.model.impl.Forest;
+import vizardous.model.impl.MetaXMLException;
+import vizardous.model.impl.PhyloXMLException;
 import vizardous.omeroserver.gui.Login;
 import vizardous.omeroserver.impl.OMEROServer;
 
