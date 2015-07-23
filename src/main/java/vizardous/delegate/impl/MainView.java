@@ -2612,7 +2612,6 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
                     if ( f == null ) 
                         throw new IllegalArgumentException("DataModel is Null");
                     else {
-                        readAndWriteExcelFile(f, System.getProperty("user.home" + "\\testFile.xls")); 
                         mainMenuTabbedPane.setSelectedIndex(2);
                     }
                 }
@@ -2625,42 +2624,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
 			}
       } else
         throw new IllegalArgumentException("PhyloXML or MetaXML argument is Null.");
-    }
-
-    /**
-     * Used the read and write an excel file. The excel file contains two columns.
-     * The first column contains the cells names and the seconde column contains 
-     * the division time values
-     * 
-     * @param forest 
-     * @param inputFile file contains the output data
-     */
-    private void readAndWriteExcelFile(Forest forest, String inputFile) {
-        List<Clade> cl = forest.getAllCladeWithMoreAsOneChild();
-        double [] values = null;
-        String [] cellsNameList = null;
-        
-        if( cl != null ) {
-            values = new double[cl.size()];
-            cellsNameList = new String[cl.size()];
-            for(int i=0; i<cl.size(); i++) {
-                Cell c = cl.get(i).getCellObject();
-                cellsNameList[i] = c.getId();
-                values[i] = c.getMIFrameObject().getElapsedTime();
-            }
-        }
-        ReadAndWriteExcel wx = new ReadAndWriteExcel();
-        wx.setOutputFile(new File(inputFile));
-        wx.setExcelData(values, cellsNameList);
-        try {
-            wx.readAndWrite();
-        } catch (IOException ex) {
-        	LoggerFactory.getLogger(MainView.class).error(null, ex);
-        } catch (WriteException ex) {
-        	LoggerFactory.getLogger(MainView.class).error(null, ex);
-        } 
-    }
-    
+    }    
     
     /**
      * This method initializes desktopPane	
