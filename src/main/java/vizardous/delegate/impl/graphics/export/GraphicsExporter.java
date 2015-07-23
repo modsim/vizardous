@@ -30,30 +30,36 @@ import vizardous.delegate.impl.graphics.AbstractChart2D;
  * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
  */
 public class GraphicsExporter {
-	
+
 	/** The {@link Logger} for this class. */
-    final static Logger logger = LoggerFactory.getLogger(GraphicsExporter.class);
-	
-    /** A map that establishes the connection between {@link FileFilter} descriptions and {@link ChartExporter}s. */
-    final static Map<String, ChartExporter> chartExporters = new HashMap<String, ChartExporter>();
-    
-    /** A map that establishes the connection between {@link FileFilter} descriptions and {@link LineageExporter}s. */
-    final static Map<String, LineageExporter> lineageExporters = new HashMap<String, LineageExporter>();
-    
-    static {
-    	/* Initialize the available ChartExporters */
-    	chartExporters.put("Portable Network Graphics (*.png)", new PngExporter());
-    	chartExporters.put("Scalable Vector Graphics (*.svg)", new SvgExporter());
-    	chartExporters.put("Joint Photographic Experts Group Format (*.jpeg)", new JpegExporter());
-    	chartExporters.put("Portable Document Format (*.pdf)", new PdfExporter());
-    	
-    	/* Initialize the available LineageExporters */
-    	lineageExporters.put("Portable Network Graphics (*.png)", new PngExporter());
-    	lineageExporters.put("Scalable Vector Graphics (*.svg)", new SvgExporter());
-    	lineageExporters.put("Joint Photographic Experts Group Format (*.jpeg)", new JpegExporter());
-    	lineageExporters.put("Portable Document Format (*.pdf)", new PdfExporter());
-    }
-    
+	final static Logger logger = LoggerFactory.getLogger(GraphicsExporter.class);
+
+	/**
+	 * A map that establishes the connection between {@link FileFilter}
+	 * descriptions and {@link ChartExporter}s.
+	 */
+	final static Map<String, ChartExporter> chartExporters = new HashMap<String, ChartExporter>();
+
+	/**
+	 * A map that establishes the connection between {@link FileFilter}
+	 * descriptions and {@link LineageExporter}s.
+	 */
+	final static Map<String, LineageExporter> lineageExporters = new HashMap<String, LineageExporter>();
+
+	static {
+		/* Initialize the available ChartExporters */
+		chartExporters.put("Portable Network Graphics (*.png)", new PngExporter());
+		chartExporters.put("Scalable Vector Graphics (*.svg)", new SvgExporter());
+		chartExporters.put("Joint Photographic Experts Group Format (*.jpeg)", new JpegExporter());
+		chartExporters.put("Portable Document Format (*.pdf)", new PdfExporter());
+
+		/* Initialize the available LineageExporters */
+		lineageExporters.put("Portable Network Graphics (*.png)", new PngExporter());
+		lineageExporters.put("Scalable Vector Graphics (*.svg)", new SvgExporter());
+		lineageExporters.put("Joint Photographic Experts Group Format (*.jpeg)", new JpegExporter());
+		lineageExporters.put("Portable Document Format (*.pdf)", new PdfExporter());
+	}
+
 	/**
 	 * Exports an {@link AbstractChart2D} to a file. To that end, a file chooser
 	 * is shown, that determines the location of the exported image.
@@ -77,21 +83,21 @@ public class GraphicsExporter {
 			if (option == JFileChooser.APPROVE_OPTION) {
 				if (myChooser.getSelectedFile() != null) {
 					String filePath = myChooser.getSelectedFile().getPath();
-					String filterDescription = myChooser.getFileFilter().getDescription();// getChoosableFileFilters();
-					
+					String filterDescription = myChooser.getFileFilter().getDescription();
+
 					/* Remove file extension (that might be wrong) */
 					if (!FilenameUtils.getExtension(filePath).equals("")) {
 						filePath = FilenameUtils.removeExtension(filePath);
 					}
-					
+
 					/* Get exporter for FileFilter */
 					ChartExporter exporter = chartExporters.get(filterDescription);
-					
+
 					/* Get correct extension for the exporter */
 					if (FilenameUtils.getExtension(filePath).equals("")) {
 						filePath = filePath + exporter.getFileExtension();
 					}
-					
+
 					exporter.exportChart(chart, filePath);
 				}
 			}
@@ -115,7 +121,8 @@ public class GraphicsExporter {
 	 *            An option to select wether the complete tree or a clipped
 	 *            version is exported.
 	 */
-	public static void exportLineageTree(mxGraphComponent graphComponent, Clipping clipping) {
+	public static void exportLineageTree(mxGraphComponent graphComponent,
+			Clipping clipping) {
 		JFileChooser chooserTreeExp = new JFileChooser();
 		chooserTreeExp.setCurrentDirectory(new java.io.File(System.getProperty("user.home")));
 		chooserTreeExp.setMultiSelectionEnabled(false);
@@ -124,27 +131,27 @@ public class GraphicsExporter {
 		chooserTreeExp.addChoosableFileFilter(new SVGFileFilter());
 		chooserTreeExp.addChoosableFileFilter(new JPEGFileFilter());
 		chooserTreeExp.addChoosableFileFilter(new PDFFileFilter());
-		
+
 		int option = chooserTreeExp.showSaveDialog(graphComponent);
 		if (option == JFileChooser.APPROVE_OPTION) {
 			if (chooserTreeExp.getSelectedFile() != null) {
 				String filePath = chooserTreeExp.getSelectedFile().getPath();
-				String filterDescription = chooserTreeExp.getFileFilter().getDescription();// getChoosableFileFilters();
+				String filterDescription = chooserTreeExp.getFileFilter().getDescription();
 
 				/* Remove file extension (that might be wrong) */
 				if (!FilenameUtils.getExtension(filePath).equals("")) {
 					filePath = FilenameUtils.removeExtension(filePath);
 				}
-				
+
 				/* Get exporter for FileFilter */
 				LineageExporter exporter = lineageExporters.get(filterDescription);
-				
+
 				/* Get correct extension for the exporter */
 				if (FilenameUtils.getExtension(filePath).equals("")) {
 					filePath = filePath + exporter.getFileExtension();
 				}
-				
-				exporter.exportLineage(graphComponent, clipping, filePath);				
+
+				exporter.exportLineage(graphComponent, clipping, filePath);
 			}
 		}
 	}
