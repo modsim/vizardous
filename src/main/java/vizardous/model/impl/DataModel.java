@@ -10,9 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import vizardous.delegate.impl.MetaXMLException;
-import vizardous.delegate.impl.PhyloXMLException;
-
 /**
  * This class represents data model of Vizardous.
  *

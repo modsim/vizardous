@@ -4,16 +4,23 @@
  */
 package vizardous.delegate.impl.fileFilter;
 
+import javax.swing.filechooser.FileFilter;
+
 /**
- * TODO
+ * A {@link FileFilter} for PNG files.
  *
  * @author Charaf E. Azzouzi <c.azzouzi@fz-juelich.de>
- * @version 1.0
- * 
+ * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
  */
+public class PNGFileFilter extends AbstractFileFilter {
+	
+	private static final PNGFileFilter instance = new PNGFileFilter();
 
- public class PNGFileFilter extends AbstractFileFilter {
-        public PNGFileFilter() {
-                super(new String[] { ".png" }, "Portable Network Graphics (*.png)");
-        }
-    }
+	public static PNGFileFilter getInstance() {
+		return instance;
+	}
+	
+	protected PNGFileFilter() {
+		super(new String[] { ".png" }, "Portable Network Graphics (*.png)");
+	}
+}

@@ -6,17 +6,23 @@ package vizardous.delegate.impl.fileFilter;
 
 import java.io.File;
 
+import javax.swing.filechooser.FileFilter;
+
 /**
- * TODO
+ * A {@link FileFilter} for XML files.
  *
  * @author Charaf E. Azzouzi <c.azzouzi@fz-juelich.de>
- * @version 1.0
- * 
+ * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
  */
-
 public class XMLFileFilter extends AbstractFileFilter {
 
-    public XMLFileFilter() {
+	private static final XMLFileFilter instance = new XMLFileFilter();
+
+	public static XMLFileFilter getInstance() {
+		return instance;
+	}
+	
+	protected XMLFileFilter() {
                 super(new String[] { ".xml" }, "eXtensible Markup Language (*.xml)");
     }
     

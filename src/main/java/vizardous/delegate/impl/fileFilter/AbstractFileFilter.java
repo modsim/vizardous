@@ -8,21 +8,17 @@ import java.io.File;
 import javax.swing.filechooser.FileFilter;
 
 /**
- * TODO
+ * An abstract {@link FileFilter} that filters according to the file extension.
  *
  * @author Charaf E. Azzouzi <c.azzouzi@fz-juelich.de>
  * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
- * 
- * @version 1.0
- * 
  */
-
 public abstract class AbstractFileFilter extends FileFilter {
 
-	//
-	// User data
-	//
+	/** TODO Documentation */
 	String[] extensions;
+	
+	/** TODO Documentation */
 	String description;
 	
 	public AbstractFileFilter() {

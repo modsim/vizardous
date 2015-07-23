@@ -4,16 +4,23 @@
  */
 package vizardous.delegate.impl.fileFilter;
 
+import javax.swing.filechooser.FileFilter;
+
 /**
- * TODO
+ * A {@link FileFilter} for JPEG files.
  *
  * @author Charaf E. Azzouzi <c.azzouzi@fz-juelich.de>
- * @version 1.0
- * 
+ * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
  */
-
 public class JPEGFileFilter extends AbstractFileFilter {
-        public JPEGFileFilter() {
-                super(new String[] { ".jpeg" }, "Portable Document Format (*.jpeg)");
-        }
-    }
+
+	private static final JPEGFileFilter instance = new JPEGFileFilter();
+
+	public static JPEGFileFilter getInstance() {
+		return instance;
+	}
+
+	protected JPEGFileFilter() {
+		super(new String[] { ".jpeg" }, "Joint Photographic Experts Group Format (*.jpeg)");
+	}
+}

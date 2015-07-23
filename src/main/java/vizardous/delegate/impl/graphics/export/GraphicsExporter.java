@@ -4,302 +4,162 @@
  */
 package vizardous.delegate.impl.graphics.export;
 
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfTemplate;
-import com.lowagie.text.pdf.PdfWriter;
+import java.util.HashMap;
+import java.util.Map;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-
-import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
-import javax.swing.JScrollPane;
+import javax.swing.filechooser.FileFilter;
 
-import org.apache.batik.dom.GenericDOMImplementation;
-import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.DOMImplementation;
+
+import com.mxgraph.swing.mxGraphComponent;
 
 import vizardous.delegate.impl.fileFilter.JPEGFileFilter;
 import vizardous.delegate.impl.fileFilter.PDFFileFilter;
 import vizardous.delegate.impl.fileFilter.PNGFileFilter;
 import vizardous.delegate.impl.fileFilter.SVGFileFilter;
 import vizardous.delegate.impl.graphics.AbstractChart2D;
-import vizardous.delegate.impl.graphics.DistributionChart2D;
-import vizardous.delegate.impl.graphics.TraceChart2D;
 
 /**
- * Export functionality for charts.
+ * Central entry point for export functionality of charts and lineage trees.
  * 
- * Methods are called via menu entries for exporting charts.
+ * Methods are called via menu entries for exporting charts and the context menu
+ * when exporting a lineage tree.
  * 
  * @author Charaf E. Azzouzi <c.azzouzi@fz-juelich.de>
  * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
  */
 public class GraphicsExporter {
-	
+
 	/** The {@link Logger} for this class. */
-    final static Logger logger = LoggerFactory.getLogger(GraphicsExporter.class);
-	
+	final static Logger logger = LoggerFactory.getLogger(GraphicsExporter.class);
+
 	/**
-	 * TODO Documentation
+	 * A map that establishes the connection between {@link FileFilter}
+	 * descriptions and {@link ChartExporter}s.
+	 */
+	final static Map<FileFilter, ChartExporter> chartExporters = new HashMap<FileFilter, ChartExporter>();
+
+	/**
+	 * A map that establishes the connection between {@link FileFilter}
+	 * descriptions and {@link LineageExporter}s.
+	 */
+	final static Map<FileFilter, LineageExporter> lineageExporters = new HashMap<FileFilter, LineageExporter>();
+
+	static {
+		/* Initialize the available ChartExporters */
+		chartExporters.put(PNGFileFilter.getInstance(), new PngExporter());
+		chartExporters.put(SVGFileFilter.getInstance(), new SvgExporter());
+		chartExporters.put(JPEGFileFilter.getInstance(), new JpegExporter());
+		chartExporters.put(PDFFileFilter.getInstance(), new PdfExporter());
+
+		/* Initialize the available LineageExporters */
+		lineageExporters.put(PNGFileFilter.getInstance(), new PngExporter());
+		lineageExporters.put(SVGFileFilter.getInstance(), new SvgExporter());
+		lineageExporters.put(JPEGFileFilter.getInstance(), new JpegExporter());
+		lineageExporters.put(PDFFileFilter.getInstance(), new PdfExporter());
+	}
+
+	/**
+	 * Exports an {@link AbstractChart2D} to a file. To that end, a file chooser
+	 * is shown, that determines the location of the exported image.
 	 * 
 	 * @param chart
+	 *            The {@link AbstractChart2D} that is exported.
 	 * @param chartArt
+	 *            The type of chart that is exported.
 	 */
 	public static void exportChart2D(AbstractChart2D chart, String chartArt) {
-		JFileChooser myChooser = new JFileChooser();
-		myChooser.setCurrentDirectory(myChooser.getFileSystemView().getHomeDirectory());
-		myChooser.setAcceptAllFileFilterUsed(false);
-		myChooser.addChoosableFileFilter(new PNGFileFilter());
-		myChooser.addChoosableFileFilter(new SVGFileFilter());
-		myChooser.addChoosableFileFilter(new JPEGFileFilter());
-		myChooser.addChoosableFileFilter(new PDFFileFilter());
+		JFileChooser myChooser = GraphicsExporter.createFileChooser();
 
 		if (chart != null) {
 			int option = myChooser.showSaveDialog(chart);
 			if (option == JFileChooser.APPROVE_OPTION) {
 				if (myChooser.getSelectedFile() != null) {
 					String filePath = myChooser.getSelectedFile().getPath();
-					String filterDescription = myChooser.getFileFilter().getDescription();// getChoosableFileFilters();
+					FileFilter filter = myChooser.getFileFilter();
 
 					/* Remove file extension (that might be wrong) */
 					if (!FilenameUtils.getExtension(filePath).equals("")) {
 						filePath = FilenameUtils.removeExtension(filePath);
 					}
 
-					// export graphic in png format
-					if (filterDescription.equals("Portable Network Graphics (*.png)")) {
-						/* Add correct extension (.png) */
-						if (FilenameUtils.getExtension(filePath).equals("")) {
-							filePath = filePath + ".png";
-						}
+					/* Get exporter for FileFilter */
+					ChartExporter exporter = chartExporters.get(filter);
 
-						BufferedImage bi = new BufferedImage((int) chart.getBounds().getWidth(), (int) chart.getBounds().getHeight(), BufferedImage.TYPE_INT_ARGB);
-						Graphics g = bi.createGraphics();
-						chart.addNotify();
-						chart.setVisible(true);
-						chart.validate();
-						chart.paint(g); // this == JComponent
-						g.dispose();
-						try {
-							ImageIO.write(bi, "png", new File(filePath));
-						} catch (Exception ex) {
-							GraphicsExporter.logger.error("Chart could not be exported.", ex);
-						}
-					}
-					// export graphic in svg format
-					else if (filterDescription.equals("Scalable Vector Graphics (*.svg)")) {
-						/* Add correct extension (.svg) */
-						if (FilenameUtils.getExtension(filePath).equals("")) {
-							filePath = filePath + ".svg";
-						}
-						
-						if (chart instanceof TraceChart2D) {
-//						if (chartArt.equals("line")) {
-							TraceChart2D traceChart = (TraceChart2D) chart;
-							traceChart.saveSVG(myChooser.getSelectedFile());
-						} else if (chart instanceof DistributionChart2D) {
-							DistributionChart2D distributionChart = (DistributionChart2D) chart;
-							distributionChart.saveSVG(myChooser.getSelectedFile());
-//						} else if (chartArt.equals("histogram")) {
-							// TODO export of distribution charts
-
-							// /* Get a DOMImplementation and create an XML
-							// document */
-							// DOMImplementation domImpl =
-							// GenericDOMImplementation.getDOMImplementation();
-							// Document document = domImpl.createDocument(null,
-							// "svg", null);
-							//
-							// /* Draw the chart in the SVG generator */
-							// SVGGraphics2D svgGenerator = new
-							// SVGGraphics2D(document);
-							// chart.paint(svgGenerator);
-							//
-							// /* Write SVG file */
-							// try {
-							// OutputStream outputStream = new
-							// FileOutputStream(new File(filePath));
-							// Writer out = new OutputStreamWriter(outputStream,
-							// "UTF-8");
-							// svgGenerator.stream(out, true /* use css */);
-							// outputStream.flush();
-							// outputStream.close();
-							// } catch (FileNotFoundException e) {
-							// // TODO Logging
-							// e.printStackTrace();
-							// } catch (UnsupportedEncodingException e) {
-							// // TODO Logging
-							// e.printStackTrace();
-							// } catch (IOException e) {
-							// // TODO Logging
-							// e.printStackTrace();
-							// }
-						}
+					/* Get correct extension for the exporter */
+					if (FilenameUtils.getExtension(filePath).equals("")) {
+						filePath = filePath + exporter.getFileExtension();
 					}
 
-					// export graphic in jpeg format
-					else if (filterDescription.equals("Joint Photographic Experts Group Format (*.jpeg)")) {
-						/* Add correct extension (.jpeg) */
-						if (FilenameUtils.getExtension(filePath).equals("")) {
-							filePath = filePath + ".jpeg";
-						}
-
-						BufferedImage expImage = new BufferedImage(chart.getWidth(), chart.getHeight(), BufferedImage.TYPE_INT_RGB);
-						/*
-						 * Print to Image, scaling if necessary.
-						 */
-						Graphics2D g2 = expImage.createGraphics();
-						chart.addNotify();
-						chart.setVisible(true);
-						chart.validate();
-						chart.paint(g2);
-						/*
-						 * Write to File
-						 */
-						try {
-							OutputStream out = new FileOutputStream(filePath);
-							ImageIO.write(expImage, "jpeg", out);
-							out.close();
-						} catch (Exception ex) {
-							GraphicsExporter.logger.error("Chart could not be exported.", ex);
-						}
-					} else
-						if (filterDescription.equals("Portable Document Format (*.pdf)")) {
-						/* Add correct extension (.pdf) */
-						if (FilenameUtils.getExtension(filePath).equals("")) {
-							filePath = filePath + ".pdf";
-						}
-
-						com.lowagie.text.Document document = new com.lowagie.text.Document(new Rectangle(0f, 0f, (float) chart.getWidth(), (float) chart.getHeight()), 0, 0, 0, 0);
-						try {
-							PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File(filePath)));
-							document.open();
-							PdfContentByte contentByte = writer.getDirectContent();
-							Graphics2D g2 = contentByte.createGraphics(chart.getWidth(), chart.getHeight());
-
-							chart.getChart().draw(g2, new java.awt.Rectangle(chart.getWidth(), chart.getHeight()));
-
-							g2.dispose();
-						} catch (Exception ex) {
-							GraphicsExporter.logger.error("Chart could not be exported.", ex);
-						} finally {
-							document.close();
-						}
-					} // if-PDF
-				} // if-SelectFile
-			} // iF-ApproveOpt.
+					exporter.exportChart(chart, filePath);
+				}
+			}
 		}
 	}
 
 	/**
+	 * Exports a lineage tree in form of an {@link mxGraphComponent} to a file.
+	 * To that end, a file chooser is shown, that determines the location of the
+	 * exported image.
 	 * 
-	 * @param treePanel
+	 * It is coupled with the lineage tree visualization so that either the
+	 * complete tree or a clipped version (as seen on the screen) is exported.
+	 * Furthermore, the current zoom level of the visualization is used for the
+	 * export.
+	 * 
+	 * @param graphComponent
+	 *            The {@link mxGraphComponent} of the lineage tree that is
+	 *            exported.
+	 * @param clipping
+	 *            An option to select wether the complete tree or a clipped
+	 *            version is exported.
 	 */
-	public static void exportLineageTree(JScrollPane treePanel) {
-		JFileChooser chooserTreeExp = new JFileChooser();
-		chooserTreeExp.setCurrentDirectory(new java.io.File(System.getProperty("user.home")));
-		chooserTreeExp.setMultiSelectionEnabled(false);
-		chooserTreeExp.setAcceptAllFileFilterUsed(false);
-		chooserTreeExp.addChoosableFileFilter(new PNGFileFilter());
-		chooserTreeExp.addChoosableFileFilter(new SVGFileFilter());
-		chooserTreeExp.addChoosableFileFilter(new JPEGFileFilter());
-		chooserTreeExp.addChoosableFileFilter(new PDFFileFilter());
-		int option = chooserTreeExp.showSaveDialog(treePanel);
+	public static void exportLineageTree(mxGraphComponent graphComponent,	Clipping clipping) {
+		JFileChooser chooserTreeExp = GraphicsExporter.createFileChooser();
+
+		int option = chooserTreeExp.showSaveDialog(graphComponent);
 		if (option == JFileChooser.APPROVE_OPTION) {
 			if (chooserTreeExp.getSelectedFile() != null) {
 				String filePath = chooserTreeExp.getSelectedFile().getPath();
-				String filterDescription = chooserTreeExp.getFileFilter().getDescription();// getChoosableFileFilters();
-				BufferedImage bi = new BufferedImage((int) treePanel.getBounds().getWidth(), (int) treePanel.getBounds().getHeight(), BufferedImage.TYPE_INT_ARGB);
-				Graphics g = bi.createGraphics();
+				FileFilter filter = chooserTreeExp.getFileFilter();
 
-				// export graphic in png format
-				if (filterDescription.equals("Portable Network Graphics (*.png)")) {
-					filePath = filePath + ".png";
-					treePanel.paint(g);
-					g.dispose();
-					try {
-						ImageIO.write(bi, "png", new File(filePath));
-					} catch (Exception ex) {
-						GraphicsExporter.logger.error("Lineage tree could not be exported.", ex);
-					}
+				/* Remove file extension (that might be wrong) */
+				if (!FilenameUtils.getExtension(filePath).equals("")) {
+					filePath = FilenameUtils.removeExtension(filePath);
 				}
-				// export graphic in svg format
-				else if (filterDescription.equals("Scalable Vector Graphics (*.svg)")) {
-					filePath = filePath + ".svg";
-					// ----------------------
-					DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
-					org.w3c.dom.Document document = domImpl.createDocument(null, "svg", null);
-					SVGGraphics2D svgGenerator = new SVGGraphics2D(document);
-					// TODO Think what's the best to take: the size of viewing
-					// panel or the size og drawing tree
-					svgGenerator.setSVGCanvasSize(new Dimension(treePanel.getWidth(), treePanel.getHeight()));
-					boolean useCSS = true;
-					try {
-						FileOutputStream os = new FileOutputStream(new File(filePath));
-						Writer out = new OutputStreamWriter(os, "UTF-8");
-						treePanel.paint(svgGenerator);
-						svgGenerator.stream(out, useCSS);
-						os.flush();
-						os.close();
-					} catch (Exception ex) {
-						GraphicsExporter.logger.error("Lineage tree could not be exported.", ex);
-					}
+
+				/* Get exporter for FileFilter */
+				LineageExporter exporter = lineageExporters.get(filter);
+
+				/* Get correct extension for the exporter */
+				if (FilenameUtils.getExtension(filePath).equals("")) {
+					filePath = filePath + exporter.getFileExtension();
 				}
-				// export graphic in jpeg format
-				else if (filterDescription.equals("Portable Document Format (*.jpeg)")) {
-					filePath = filePath + ".jpeg";
-					BufferedImage expImage = new BufferedImage(treePanel.getWidth(), treePanel.getHeight(), BufferedImage.TYPE_INT_RGB);
-					/*
-					 * Print to Image, scaling if necessary.
-					 */
-					Graphics2D g2 = expImage.createGraphics();
-					treePanel.paint(g2);
-					/*
-					 * Write to File
-					 */
-					try {
-						OutputStream out = new FileOutputStream(filePath);
-						ImageIO.write(expImage, "jpeg", out);
-						out.close();
-					} catch (Exception ex) {
-						GraphicsExporter.logger.error("Lineage tree could not be exported.", ex);
-					}
-				}
-				// export graphic in pdf format
-				else if (filterDescription.equals("Portable Document Format (*.pdf)")) {
-					filePath = filePath + ".pdf";
-					com.lowagie.text.Document document = new com.lowagie.text.Document(PageSize.A3.rotate(), 0, 0, 0, 0);
-					try {
-						PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File(filePath)));
-						document.open();
-						PdfContentByte contentByte = writer.getDirectContent();
-						PdfTemplate template = contentByte.createTemplate(treePanel.getWidth(), treePanel.getHeight());
-						Graphics2D g2 = template.createGraphics(treePanel.getWidth(), treePanel.getHeight());
-						treePanel.print(g2);
-						g2.dispose();
-						contentByte.addTemplate(template, 0, 0);
-					} catch (Exception ex) {
-						GraphicsExporter.logger.error("Lineage tree could not be exported.", ex);
-					} finally {
-						if (document.isOpen()) {
-							document.close();
-						}
-					}
-				} // if-PDF
-			} // if-SelectFile
-		} // iF-ApproveOpt.
+
+				exporter.exportLineage(graphComponent, clipping, filePath);
+			}
+		}
+	}
+	
+	/**
+	 * Creates a file chooser with the available exporters (curated manually)
+	 * 
+	 * @return A {@link JFileChooser} of the user's home directory without
+	 *         multi-selection enabled and the avilable file filters.
+	 */
+	private static JFileChooser createFileChooser() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home")));
+		chooser.setMultiSelectionEnabled(false);
+		chooser.setAcceptAllFileFilterUsed(false);
+		chooser.addChoosableFileFilter(PNGFileFilter.getInstance());
+		chooser.addChoosableFileFilter(SVGFileFilter.getInstance());
+		chooser.addChoosableFileFilter(JPEGFileFilter.getInstance());
+		chooser.addChoosableFileFilter(PDFFileFilter.getInstance());
+		
+		return chooser;
 	}
 }
