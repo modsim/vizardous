@@ -124,7 +124,7 @@ public class PdfExporter implements LineageExporter, ChartExporter, VectorExport
 
 	@Override
 	public FileFilter getFileFilter() {
-		return new PDFFileFilter();
+		return PDFFileFilter.getInstance();
 	}
 	
 }

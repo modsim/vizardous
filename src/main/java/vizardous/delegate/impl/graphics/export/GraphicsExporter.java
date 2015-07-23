@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,26 +40,26 @@ public class GraphicsExporter {
 	 * A map that establishes the connection between {@link FileFilter}
 	 * descriptions and {@link ChartExporter}s.
 	 */
-	final static Map<String, ChartExporter> chartExporters = new HashMap<String, ChartExporter>();
+	final static Map<FileFilter, ChartExporter> chartExporters = new HashMap<FileFilter, ChartExporter>();
 
 	/**
 	 * A map that establishes the connection between {@link FileFilter}
 	 * descriptions and {@link LineageExporter}s.
 	 */
-	final static Map<String, LineageExporter> lineageExporters = new HashMap<String, LineageExporter>();
+	final static Map<FileFilter, LineageExporter> lineageExporters = new HashMap<FileFilter, LineageExporter>();
 
 	static {
 		/* Initialize the available ChartExporters */
-		chartExporters.put("Portable Network Graphics (*.png)", new PngExporter());
-		chartExporters.put("Scalable Vector Graphics (*.svg)", new SvgExporter());
-		chartExporters.put("Joint Photographic Experts Group Format (*.jpeg)", new JpegExporter());
-		chartExporters.put("Portable Document Format (*.pdf)", new PdfExporter());
+		chartExporters.put(PNGFileFilter.getInstance(), new PngExporter());
+		chartExporters.put(SVGFileFilter.getInstance(), new SvgExporter());
+		chartExporters.put(JPEGFileFilter.getInstance(), new JpegExporter());
+		chartExporters.put(PDFFileFilter.getInstance(), new PdfExporter());
 
 		/* Initialize the available LineageExporters */
-		lineageExporters.put("Portable Network Graphics (*.png)", new PngExporter());
-		lineageExporters.put("Scalable Vector Graphics (*.svg)", new SvgExporter());
-		lineageExporters.put("Joint Photographic Experts Group Format (*.jpeg)", new JpegExporter());
-		lineageExporters.put("Portable Document Format (*.pdf)", new PdfExporter());
+		lineageExporters.put(PNGFileFilter.getInstance(), new PngExporter());
+		lineageExporters.put(SVGFileFilter.getInstance(), new SvgExporter());
+		lineageExporters.put(JPEGFileFilter.getInstance(), new JpegExporter());
+		lineageExporters.put(PDFFileFilter.getInstance(), new PdfExporter());
 	}
 
 	/**
@@ -77,7 +79,7 @@ public class GraphicsExporter {
 			if (option == JFileChooser.APPROVE_OPTION) {
 				if (myChooser.getSelectedFile() != null) {
 					String filePath = myChooser.getSelectedFile().getPath();
-					String filterDescription = myChooser.getFileFilter().getDescription();
+					FileFilter filter = myChooser.getFileFilter();
 
 					/* Remove file extension (that might be wrong) */
 					if (!FilenameUtils.getExtension(filePath).equals("")) {
@@ -85,7 +87,7 @@ public class GraphicsExporter {
 					}
 
 					/* Get exporter for FileFilter */
-					ChartExporter exporter = chartExporters.get(filterDescription);
+					ChartExporter exporter = chartExporters.get(filter);
 
 					/* Get correct extension for the exporter */
 					if (FilenameUtils.getExtension(filePath).equals("")) {
@@ -122,7 +124,7 @@ public class GraphicsExporter {
 		if (option == JFileChooser.APPROVE_OPTION) {
 			if (chooserTreeExp.getSelectedFile() != null) {
 				String filePath = chooserTreeExp.getSelectedFile().getPath();
-				String filterDescription = chooserTreeExp.getFileFilter().getDescription();
+				FileFilter filter = chooserTreeExp.getFileFilter();
 
 				/* Remove file extension (that might be wrong) */
 				if (!FilenameUtils.getExtension(filePath).equals("")) {
@@ -130,7 +132,7 @@ public class GraphicsExporter {
 				}
 
 				/* Get exporter for FileFilter */
-				LineageExporter exporter = lineageExporters.get(filterDescription);
+				LineageExporter exporter = lineageExporters.get(filter);
 
 				/* Get correct extension for the exporter */
 				if (FilenameUtils.getExtension(filePath).equals("")) {
@@ -153,10 +155,10 @@ public class GraphicsExporter {
 		chooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home")));
 		chooser.setMultiSelectionEnabled(false);
 		chooser.setAcceptAllFileFilterUsed(false);
-		chooser.addChoosableFileFilter(new PNGFileFilter());
-		chooser.addChoosableFileFilter(new SVGFileFilter());
-		chooser.addChoosableFileFilter(new JPEGFileFilter());
-		chooser.addChoosableFileFilter(new PDFFileFilter());
+		chooser.addChoosableFileFilter(PNGFileFilter.getInstance());
+		chooser.addChoosableFileFilter(SVGFileFilter.getInstance());
+		chooser.addChoosableFileFilter(JPEGFileFilter.getInstance());
+		chooser.addChoosableFileFilter(PDFFileFilter.getInstance());
 		
 		return chooser;
 	}

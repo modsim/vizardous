@@ -55,7 +55,7 @@ public class PngExporter implements LineageExporter, ChartExporter, BitmapExport
 
 	@Override
 	public FileFilter getFileFilter() {
-		return new PNGFileFilter();
+		return PNGFileFilter.getInstance();
 	}
 
 }

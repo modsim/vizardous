@@ -70,7 +70,7 @@ public class JpegExporter implements LineageExporter, ChartExporter, BitmapExpor
 
 	@Override
 	public FileFilter getFileFilter() {
-		return new JPEGFileFilter();
+		return JPEGFileFilter.getInstance();
 	}
 	
 }

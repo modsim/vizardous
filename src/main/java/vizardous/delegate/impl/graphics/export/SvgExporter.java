@@ -62,7 +62,7 @@ public class SvgExporter implements LineageExporter, ChartExporter, VectorExport
 
 	@Override
 	public FileFilter getFileFilter() {
-		return new SVGFileFilter();
+		return SVGFileFilter.getInstance();
 	}
 
 }

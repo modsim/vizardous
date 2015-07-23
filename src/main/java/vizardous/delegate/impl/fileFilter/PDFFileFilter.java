@@ -4,16 +4,23 @@
  */
 package vizardous.delegate.impl.fileFilter;
 
+import javax.swing.filechooser.FileFilter;
+
 /**
- * TODO
+ * A {@link FileFilter} for PDF files.
  *
  * @author Charaf E. Azzouzi <c.azzouzi@fz-juelich.de>
- * @version 1.0
- * 
+ * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
  */
-
 public class PDFFileFilter extends AbstractFileFilter {
-        public PDFFileFilter() {
-                super(new String[] { ".pdf" }, "Portable Document Format (*.pdf)");
-        }
-    }
+
+	private static final PDFFileFilter instance = new PDFFileFilter();
+
+	public static PDFFileFilter getInstance() {
+		return instance;
+	}
+	
+	protected PDFFileFilter() {
+		super(new String[] { ".pdf" }, "Portable Document Format (*.pdf)");
+	}
+}

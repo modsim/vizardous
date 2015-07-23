@@ -197,7 +197,7 @@ public class MyFileChooser extends javax.swing.JFrame {
         openFileChooser1.setCurrentDirectory(openFileChooser1.getFileSystemView()
                         .getParentDirectory(new File(System.getProperty("user.home")))); 
         openFileChooser1.setMultiSelectionEnabled(false);
-        openFileChooser1.addChoosableFileFilter(new XMLFileFilter());
+        openFileChooser1.addChoosableFileFilter(XMLFileFilter.getInstance());
         openFileChooser1.addChoosableFileFilter(openFileChooser1.getAcceptAllFileFilter());
 
         int ret = openFileChooser1.showOpenDialog(null);
@@ -222,7 +222,7 @@ public class MyFileChooser extends javax.swing.JFrame {
         openFileChooser2.setCurrentDirectory(openFileChooser2.getFileSystemView()
                         .getParentDirectory(new File(System.getProperty("user.home"))));
         openFileChooser2.setMultiSelectionEnabled(false);
-        openFileChooser2.addChoosableFileFilter(new XMLFileFilter());
+        openFileChooser2.addChoosableFileFilter(XMLFileFilter.getInstance());
         openFileChooser2.addChoosableFileFilter(openFileChooser2.getAcceptAllFileFilter());
         
         int ret = openFileChooser2.showOpenDialog(null);

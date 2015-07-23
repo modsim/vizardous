@@ -4,16 +4,23 @@
  */
 package vizardous.delegate.impl.fileFilter;
 
+import javax.swing.filechooser.FileFilter;
+
 /**
- * TODO
+ * A {@link FileFilter} for SVG files.
  *
  * @author Charaf E. Azzouzi <c.azzouzi@fz-juelich.de>
- * @version 1.0
- * 
+ * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
  */
-
 public class SVGFileFilter extends AbstractFileFilter {
-        public SVGFileFilter() {
-                super(new String[] { ".svg" }, "Scalable Vector Graphics (*.svg)");
-        }
-    }
+	
+	private static final SVGFileFilter instance = new SVGFileFilter();
+
+	public static SVGFileFilter getInstance() {
+		return instance;
+	}
+	
+	protected SVGFileFilter() {
+		super(new String[] { ".svg" }, "Scalable Vector Graphics (*.svg)");
+	}
+}
