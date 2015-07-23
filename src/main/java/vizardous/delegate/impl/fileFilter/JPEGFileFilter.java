@@ -14,6 +14,6 @@ package vizardous.delegate.impl.fileFilter;
 
 public class JPEGFileFilter extends AbstractFileFilter {
         public JPEGFileFilter() {
-                super(new String[] { ".jpeg" }, "Portable Document Format (*.jpeg)");
+                super(new String[] { ".jpeg" }, "Joint Photographic Experts Group Format (*.jpeg)");
         }
     }
