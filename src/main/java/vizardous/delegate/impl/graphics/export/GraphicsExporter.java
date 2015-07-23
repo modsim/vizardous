@@ -70,13 +70,7 @@ public class GraphicsExporter {
 	 *            The type of chart that is exported.
 	 */
 	public static void exportChart2D(AbstractChart2D chart, String chartArt) {
-		JFileChooser myChooser = new JFileChooser();
-		myChooser.setCurrentDirectory(myChooser.getFileSystemView().getHomeDirectory());
-		myChooser.setAcceptAllFileFilterUsed(false);
-		myChooser.addChoosableFileFilter(new PNGFileFilter());
-		myChooser.addChoosableFileFilter(new SVGFileFilter());
-		myChooser.addChoosableFileFilter(new JPEGFileFilter());
-		myChooser.addChoosableFileFilter(new PDFFileFilter());
+		JFileChooser myChooser = GraphicsExporter.createFileChooser();
 
 		if (chart != null) {
 			int option = myChooser.showSaveDialog(chart);
@@ -121,16 +115,8 @@ public class GraphicsExporter {
 	 *            An option to select wether the complete tree or a clipped
 	 *            version is exported.
 	 */
-	public static void exportLineageTree(mxGraphComponent graphComponent,
-			Clipping clipping) {
-		JFileChooser chooserTreeExp = new JFileChooser();
-		chooserTreeExp.setCurrentDirectory(new java.io.File(System.getProperty("user.home")));
-		chooserTreeExp.setMultiSelectionEnabled(false);
-		chooserTreeExp.setAcceptAllFileFilterUsed(false);
-		chooserTreeExp.addChoosableFileFilter(new PNGFileFilter());
-		chooserTreeExp.addChoosableFileFilter(new SVGFileFilter());
-		chooserTreeExp.addChoosableFileFilter(new JPEGFileFilter());
-		chooserTreeExp.addChoosableFileFilter(new PDFFileFilter());
+	public static void exportLineageTree(mxGraphComponent graphComponent,	Clipping clipping) {
+		JFileChooser chooserTreeExp = GraphicsExporter.createFileChooser();
 
 		int option = chooserTreeExp.showSaveDialog(graphComponent);
 		if (option == JFileChooser.APPROVE_OPTION) {
@@ -154,5 +140,24 @@ public class GraphicsExporter {
 				exporter.exportLineage(graphComponent, clipping, filePath);
 			}
 		}
+	}
+	
+	/**
+	 * Creates a file chooser with the available exporters (curated manually)
+	 * 
+	 * @return A {@link JFileChooser} of the user's home directory without
+	 *         multi-selection enabled and the avilable file filters.
+	 */
+	private static JFileChooser createFileChooser() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home")));
+		chooser.setMultiSelectionEnabled(false);
+		chooser.setAcceptAllFileFilterUsed(false);
+		chooser.addChoosableFileFilter(new PNGFileFilter());
+		chooser.addChoosableFileFilter(new SVGFileFilter());
+		chooser.addChoosableFileFilter(new JPEGFileFilter());
+		chooser.addChoosableFileFilter(new PDFFileFilter());
+		
+		return chooser;
 	}
 }
