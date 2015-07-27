@@ -392,11 +392,16 @@ public class Cell implements Iterable<Cell> {
     	return this.getParentCell().getChildren().size() > 1;
     }
     
-    /**
-     * The iterator walks the lineage tree in depth-first order.
-     * 
-     * @return an iterator for the subtree rooted at the node from which it is called.
-     */
+	/**
+	 * The iterator walks the lineage tree in depth-first order (as implemented
+	 * in {@link DFSTreeIterator}).
+	 * 
+	 * The first {@link Cell} returned will be the cell on which this method is
+	 * called.
+	 * 
+	 * @return an iterator for the subtree rooted at the node from which it is
+	 *         called.
+	 */
     public Iterator<Cell> iterator() {
     	return new DFSTreeIterator(this);
     }
