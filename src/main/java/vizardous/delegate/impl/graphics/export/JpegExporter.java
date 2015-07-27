@@ -12,9 +12,15 @@ import javax.imageio.ImageIO;
 import javax.swing.filechooser.FileFilter;
 
 import com.mxgraph.canvas.mxGraphics2DCanvas;
+import com.mxgraph.canvas.mxICanvas;
 import com.mxgraph.canvas.mxImageCanvas;
+import com.mxgraph.canvas.mxSvgCanvas;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.swing.mxGraphComponent.mxGraphControl;
+import com.mxgraph.util.mxCellRenderer;
+import com.mxgraph.util.mxDomUtils;
+import com.mxgraph.util.mxRectangle;
+import com.mxgraph.util.mxCellRenderer.CanvasFactory;
 import com.mxgraph.view.mxGraph;
 import com.mxgraph.view.mxGraphView;
 
@@ -75,32 +81,13 @@ public class JpegExporter implements LineageExporter, ChartExporter, BitmapExpor
 			rect = graph.getPaintBounds(cells).getRectangle();
 			break;
 		}
-			
-		mxImageCanvas canvas = new mxImageCanvas(new mxGraphics2DCanvas(), (int) rect.getWidth(), (int) rect.getHeight(), Color.WHITE, true);
-		mxGraphView view = graph.getView();
 
-		// TODO Figure out, why the original code does not work
-		/* The following lines of code are from mxCellRenderer.java:L75 */
-		double previousScale = canvas.getScale();
-		Point previousTranslate = canvas.getTranslate();
+		mxImageCanvas canvas = (mxImageCanvas) mxCellRenderer.drawCells(graphComponent.getGraph(), null, graph.getView().getScale(), new mxRectangle(rect), new CanvasFactory() {							
+			public mxICanvas createCanvas(int width, int height) {
+				mxImageCanvas canvas = new mxImageCanvas(new mxGraphics2DCanvas(), width, height, Color.WHITE, true);
 
-		try
-		{
-			canvas.setTranslate(-rect.x, -rect.y);
-			canvas.setScale(view.getScale());
-
-			for (int i = 0; i < cells.length; i++)
-			{
-				graph.drawCell(canvas, cells[i]);
-			}
-		}
-		finally
-		{
-			canvas.setScale(previousScale);
-			canvas.setTranslate(previousTranslate.x,
-					previousTranslate.y);
-		}
-		/* End of copy from mxCellRenderer.java */
+				return canvas;
+			}});
 		
 		BufferedImage image = canvas.destroy();
 		
