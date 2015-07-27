@@ -1918,6 +1918,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
                         "Please select a window for export first.",
                         "Warning",
                         JOptionPane.WARNING_MESSAGE, new javax.swing.ImageIcon(getClass().getResource("/icons/alert_3_32x32.png")));
+            	return;
             }
             
             GraphicsExporter.exportLineageTree(activeWindow.getDrawedPhyloTreeList().get(0).getPhyloTreePanel(), Clipping.NONE);
@@ -1927,6 +1928,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
                 "You have to import at first PhyloXML- and MetaML-files!",
                 "Warning",
                 JOptionPane.WARNING_MESSAGE, new javax.swing.ImageIcon(getClass().getResource("/icons/alert_3_32x32.png")));
+             return;
         }
     }//GEN-LAST:event_exportLineageTreeMenuItemActionPerformed
 
