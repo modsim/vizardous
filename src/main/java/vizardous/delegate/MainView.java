@@ -68,8 +68,8 @@ import vizardous.model.DataModel;
 import vizardous.model.Forest;
 import vizardous.model.MetaXMLException;
 import vizardous.model.PhyloXMLException;
-import vizardous.omeroserver.gui.Login;
-import vizardous.omeroserver.impl.OMEROServer;
+import vizardous.omero.OMEROServer;
+import vizardous.omero.gui.Login;
 
 /**
  * The main frame of Vizardous.

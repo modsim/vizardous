@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package vizardous.omeroserver.impl;
+package vizardous.omero;
 
 import Glacier2.CannotCreateSessionException;
 import Glacier2.PermissionDeniedException;
@@ -27,7 +27,7 @@ import omero.model.Annotation;
 import omero.model.FileAnnotation;
 import omero.sys.ParametersI;
 import pojos.FileAnnotationData;
-import vizardous.omeroserver.gui.Login;
+import vizardous.omero.gui.Login;
 
 /**
  * This class implements the connection and disconnection to OMERO server. 

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates//GEN-LAST:event_connectionButtonActionPerformed
  * and open the template in the editor.
  */
-package vizardous.omeroserver.gui;
+package vizardous.omero.gui;
 
 /**
  * This class implements a graphical user interface for the administration of 
