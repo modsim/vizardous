@@ -2709,58 +2709,6 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
             } else if(n == JOptionPane.NO_OPTION) 
                 login.dispose();
     }
-    
-     /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-         
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            LoggerFactory.getLogger(MainView.class).error(null, ex);
-        } catch (InstantiationException ex) {
-        	LoggerFactory.getLogger(MainView.class).error(null, ex);
-        } catch (IllegalAccessException ex) {
-        	LoggerFactory.getLogger(MainView.class).error(null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-        	LoggerFactory.getLogger(MainView.class).error(null, ex);
-        }
-        //</editor-fold>
-
-        Locale.setDefault(Locale.US);
-        _vizardous = new MainView();
-        
-        if( args.length == 0 ) {
-        	LoggerFactory.getLogger(MainView.class).info("There were no commandline arguments passed!");
-        } else {
-            File f1 = new File(args[0]);
-            File f2 = new File(args[1]);
-            File f3 = new File(args[2]);
-            _vizardous.openFiles(f1, f2);
-//            _vizardous.readAndWriteExcelFile(f3.getName());
-        }
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            
-            @Override
-            public void run() {
-                _vizardous.centerFrame();
-                _vizardous.setVisible(true);
-            }
-        });
-    }
      
     public void propertyChange(PropertyChangeEvent event) {
         // if the operation is finished or has been canceled by

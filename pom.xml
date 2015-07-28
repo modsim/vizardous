@@ -160,6 +160,13 @@
             <artifactId>jaxen</artifactId>
             <version>1.1.6</version>
         </dependency>
+        
+        <!-- Commandline parsing -->
+		<dependency>
+		  <groupId>com.beust</groupId>
+		  <artifactId>jcommander</artifactId>
+		  <version>1.48</version>
+		</dependency>		
     </dependencies>
 
     <build>
@@ -185,7 +192,7 @@
                 <configuration>          
                     <archive>
                         <manifest>
-                            <mainClass>vizardous.delegate.MainView</mainClass>
+                            <mainClass>vizardous.Vizardous</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
