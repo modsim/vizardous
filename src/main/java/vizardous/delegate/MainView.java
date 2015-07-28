@@ -292,9 +292,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         exitMenuItem = new javax.swing.JMenuItem();
         selectMenu = new javax.swing.JMenu();
-        selectRootMenuItem = new javax.swing.JMenuItem();
         selectAllLeavesMenuItem = new javax.swing.JMenuItem();
-        selectAllNodesMenuItem = new javax.swing.JMenuItem();
         viewMenu = new javax.swing.JMenu();
         zoomInMenuItem = new javax.swing.JMenuItem();
         zoomOutMenuItem = new javax.swing.JMenuItem();
@@ -408,12 +406,12 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         });
         jToolBar2.add(zoomOutTBar1);
 
-        fitToViewBarJMenuItem.setEnabled(false);
         fitToViewBarJMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/zoom_best_fit22x22.png"))); // NOI18N
         fitToViewBarJMenuItem.setToolTipText("Fit to view");
         fitToViewBarJMenuItem.setFocusable(false);
         fitToViewBarJMenuItem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         fitToViewBarJMenuItem.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        fitToViewBarJMenuItem.setEnabled(false);
         fitToViewBarJMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fitToViewBarJMenuItemActionPerformed(evt);
@@ -537,11 +535,11 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
                             .addComponent(jLabel_IBG1Text1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel_IBG1Logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel_IBG1Text2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 575, Short.MAX_VALUE))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGap(252, 252, 252)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(85, 85, 85)))
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -575,7 +573,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         welcomePanel.setLayout(welcomePanelLayout);
         welcomePanelLayout.setHorizontalGroup(
             welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 1140, Short.MAX_VALUE)
+            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, 1124, Short.MAX_VALUE)
         );
         welcomePanelLayout.setVerticalGroup(
             welcomePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -659,7 +657,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         fileChooserPanel.setLayout(fileChooserPanelLayout);
         fileChooserPanelLayout.setHorizontalGroup(
             fileChooserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 566, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
             .addGroup(fileChooserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(fileChooserPanelLayout.createSequentialGroup()
                     .addGroup(fileChooserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -851,7 +849,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)))
                 .addGap(24, 24, 24))
         );
         navigatorPanelLayout.setVerticalGroup(
@@ -859,9 +857,9 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
             .addGroup(navigatorPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(navigatorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(fileChooserPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 607, Short.MAX_VALUE))
+                    .addComponent(fileChooserPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(57, 57, 57))
@@ -969,7 +967,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
                             .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(fileMenuHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 94, Short.MAX_VALUE)
                             .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1258,7 +1256,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
                                 .addGap(18, 18, 18)
                                 .addGroup(viewtMenuHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel54, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel57, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE))))
+                                    .addComponent(jLabel57, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))))
                         .addGap(95, 95, 95))
                     .addGroup(viewtMenuHelpLayout.createSequentialGroup()
                         .addGap(22, 22, 22)
@@ -1474,16 +1472,16 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
                 .addContainerGap()
                 .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(helpPanelLayout.createSequentialGroup()
-                        .addComponent(helpMenuHelp, javax.swing.GroupLayout.DEFAULT_SIZE, 1120, Short.MAX_VALUE)
+                        .addComponent(helpMenuHelp, javax.swing.GroupLayout.DEFAULT_SIZE, 1164, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(helpPanelLayout.createSequentialGroup()
-                        .addComponent(fileMenuHelp, javax.swing.GroupLayout.DEFAULT_SIZE, 1119, Short.MAX_VALUE)
+                        .addComponent(fileMenuHelp, javax.swing.GroupLayout.DEFAULT_SIZE, 1165, Short.MAX_VALUE)
                         .addGap(11, 11, 11))
                     .addGroup(helpPanelLayout.createSequentialGroup()
                         .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(viewtMenuHelp1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(selectMenuHelp, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(viewtMenuHelp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(viewtMenuHelp2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1536,7 +1534,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         jMenuBar1.setMaximumSize(new java.awt.Dimension(132, 1024));
 
         fileMenu.setText("File");
-        
+
         OpenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         OpenMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/file_open_16x16.png"))); // NOI18N
         OpenMenuItem.setMnemonic('a');
@@ -1706,7 +1704,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
 
         selectAllLeavesMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
         selectAllLeavesMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons16x16/shapes_many_select.png"))); // NOI18N
-        selectAllLeavesMenuItem.setText("Select leaves");
+        selectAllLeavesMenuItem.setText("Select leafs");
         selectAllLeavesMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectAllLeavesMenuItemActionPerformed(evt);
@@ -1812,7 +1810,6 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         jMenuBar1.add(tileHorizontalMeniItem);
 
         helpMenu.setText("Help");
-        helpMenu.setMaximumSize(new java.awt.Dimension(33, 1024));
 
         jMenuItemHelp.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         jMenuItemHelp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/symbol_help16x16.png"))); // NOI18N
@@ -2941,10 +2938,8 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
     private javax.swing.JButton printBar1;
     private javax.swing.JMenuItem printMenuItem;
     private javax.swing.JMenuItem selectAllLeavesMenuItem;
-    private javax.swing.JMenuItem selectAllNodesMenuItem;
     private javax.swing.JMenu selectMenu;
     private javax.swing.JPanel selectMenuHelp;
-    private javax.swing.JMenuItem selectRootMenuItem;
     private javax.swing.JTable tableforImportFiles;
     private javax.swing.JButton tileHorizentalBarItem;
     private javax.swing.JMenu tileHorizontalMeniItem;
