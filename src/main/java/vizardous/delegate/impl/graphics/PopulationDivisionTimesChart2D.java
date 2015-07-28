@@ -100,8 +100,8 @@ public class PopulationDivisionTimesChart2D extends AbstractChart2D {
 
 			// Add this chart as ActionLister for the click in the PopupMenu
 			JPopupMenu popupMenu = chartPanel.getPopupMenu();
-			JMenuItem dumpDataItem = new JMenuItem("Dump data to file");
-			popupMenu.add(dumpDataItem);
+//			JMenuItem dumpDataItem = new JMenuItem("Dump data to file");
+//			popupMenu.add(dumpDataItem);
 			dumpDataItem.addActionListener(this);
 			popupMenu.add(this.saveSVGItem);
 			this.saveSVGItem.addActionListener(this);
