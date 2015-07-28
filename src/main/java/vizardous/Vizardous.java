@@ -1,4 +1,4 @@
-package vizardous.delegate.impl;
+package vizardous;
 
 import java.io.File;
 import java.util.Locale;
@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.converters.FileConverter;
+
+import vizardous.delegate.impl.MainView;
 
 /**
  * This class acts as an entry point for starting a Vizardous instance. Hence,

@@ -192,7 +192,7 @@
                 <configuration>          
                     <archive>
                         <manifest>
-                            <mainClass>vizardous.delegate.impl.MainView</mainClass>
+                            <mainClass>vizardous.Vizardous</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
