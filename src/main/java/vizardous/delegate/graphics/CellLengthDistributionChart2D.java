@@ -146,7 +146,7 @@ public class CellLengthDistributionChart2D extends DistributionChart2D {
     	
     	final JFreeChart chart = ChartFactory.createHistogram(
                 "Cell length distribution",
-                String.format("Lenght [%s]", lengthUnit),
+                String.format("Length [%s]", lengthUnit),
                 "Occurrence [-]",
                 dataset,
                 PlotOrientation.VERTICAL,
