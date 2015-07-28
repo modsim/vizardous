@@ -3,14 +3,11 @@ package vizardous.delegate.impl;
 import java.io.File;
 import java.util.Locale;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 import org.slf4j.LoggerFactory;
+
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
+import com.beust.jcommander.converters.FileConverter;
 
 /**
  * This class acts as an entry point for starting a Vizardous instance. Hence,
@@ -22,6 +19,18 @@ import org.slf4j.LoggerFactory;
 public class Vizardous {
 	
 	public MainView view;
+	
+	@Parameter(names = {"-p", "--phyloxml"}, description = "use given PhyloXML", converter = FileConverter.class)
+	private static File phyloXml;
+	
+	@Parameter(names = {"-m", "--metaxml"}, description = "use given MetaXML", converter = FileConverter.class)
+	private static File metaXml;
+	
+	@Parameter(names = {"-o", "--output"}, description = "Output file", converter = FileConverter.class, hidden = true)
+	private static File output;
+	
+	@Parameter(names = "--help", help = true)
+	private static boolean help;
 	
 	/**
      * @param args the command line arguments
@@ -55,87 +64,36 @@ public class Vizardous {
         
         /* Show help if no commandline parameters are passed */
         if (args.length != 0) {
-        	// create Options object
-            Options options = new Options();
-
-            Option phyloxml = Option.builder("phyloxml")
-            		.required(true)
-            		.argName("file")
-                    .hasArg()
-                    .desc("use given PhyloXML")
-                    .build();
-            options.addOption(phyloxml);
+        	JCommander jc = new JCommander(vizardousInstance, args);
+            jc.setProgramName("vizardous");
             
-            Option metaxml = Option.builder("metaxml")
-            		.required(true)
-            		.argName("file")
-                    .hasArg()
-                    .desc("use given MetaXML")
-                    .build();
-            options.addOption(metaxml);
-            
-            Option output = Option.builder("output")
-            		.required(false)
-            		.argName("file")
-                    .hasArg()
-                    .desc("Output file")
-                    .build();
-            options.addOption(output);
-            
-            Option help = new Option("help", "print this message");
-            options.addOption(help);
-            
-            // Create the commandline parser
-            CommandLineParser parser = new DefaultParser();
-            try {
-                // parse the command line arguments
-                CommandLine line = parser.parse(options, args, false);
+            if (help) {
+            	jc.usage();
+            }
                 
-                // Returns the left-over commandline arguments
-                line.getArgs();
+            /* Check if an output file is provided */
+            if (Vizardous.phyloXml != null && Vizardous.metaXml != null && Vizardous.output == null) {
+            	Locale.setDefault(Locale.US);
+                vizardousInstance.view = new MainView();
                 
-                File f1 = null;
-                File f2 = null;
-                File f3 = null;
-                
-                // has the phyloxml argument been passed?
-                if (line.hasOption("phyloxml")) {
-                    // initialise the member variable
-                    f1 = new File(line.getOptionValue("phyloxml"));
-                }
-                
-                // has the metaxml argument been passed?
-                if (line.hasOption("metaxml")) {
-                    // initialise the member variable
-                    f2 = new File(line.getOptionValue("metaxml"));
-                }
-                
-                // has the output argument been passed?
-                if (line.hasOption("output")) {
-                    // initialise the member variable
-                    f3 = new File(line.getOptionValue("output"));
-                }
-                
-                /* Show help */
-                if (line.hasOption("help")) {
-                	HelpFormatter formatter = new HelpFormatter();
-                    formatter.printHelp("Vizardous", options, true);
-                }
-                
-                /* Check if an output file is provided */
-                if (line.hasOption("phyloxml") && line.hasOption("metaxml") && !line.hasOption("output")) {
-                	// If not: open the GUI
-                	vizardousInstance.view.openFiles(f1, f2);
-                } else {
-                	// If provided: execute computation and write to file
-                	/* Do the computation */
-                    // TODO
+                /* Create and display the form */
+                java.awt.EventQueue.invokeLater(new Runnable() {
                     
-                    /* Write results to output file */
-                    // TODO
-                }
-            } catch(ParseException exp) {
-                LoggerFactory.getLogger(Vizardous.class).error("Parsing failed.", exp);
+                    @Override
+                    public void run() {
+                        vizardousInstance.view.centerFrame();
+                        vizardousInstance.view.setVisible(true);
+                    }
+                });            	
+            	
+            	vizardousInstance.view.openFiles(Vizardous.phyloXml, Vizardous.metaXml);
+            } else {
+            	// If provided: execute computation and write to file
+            	/* Do the computation */
+                // TODO
+                
+                /* Write results to output file */
+                // TODO
             }
         } else {
         	Locale.setDefault(Locale.US);
