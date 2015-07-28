@@ -18,6 +18,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import vizardous.model.DataModel;
+import vizardous.model.Forest;
+
 /**
  * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
  * @version 0.1
