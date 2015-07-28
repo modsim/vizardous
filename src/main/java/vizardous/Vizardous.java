@@ -3,13 +3,15 @@ package vizardous;
 import java.io.File;
 import java.util.Locale;
 
+import javax.swing.SwingUtilities;
+
 import org.slf4j.LoggerFactory;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.converters.FileConverter;
 
-import vizardous.delegate.impl.MainView;
+import vizardous.delegate.MainView;
 
 /**
  * This class acts as an entry point for starting a Vizardous instance. Hence,
@@ -79,7 +81,7 @@ public class Vizardous {
                 vizardousInstance.view = new MainView();
                 
                 /* Create and display the form */
-                java.awt.EventQueue.invokeLater(new Runnable() {
+                SwingUtilities.invokeLater(new Runnable() {
                     
                     @Override
                     public void run() {
@@ -102,7 +104,7 @@ public class Vizardous {
             vizardousInstance.view = new MainView();
             
             /* Create and display the form */
-            java.awt.EventQueue.invokeLater(new Runnable() {
+            SwingUtilities.invokeLater(new Runnable() {
                 
                 @Override
                 public void run() {
