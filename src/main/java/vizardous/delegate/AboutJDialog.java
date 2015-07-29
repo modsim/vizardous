@@ -57,7 +57,7 @@ public class AboutJDialog extends javax.swing.JDialog {
         setTitle("About");
 
         softwareName.setFont(new java.awt.Font("Palatino Linotype", 1, 18)); // NOI18N
-        softwareName.setText("Vizardous 1.0.0");
+        softwareName.setText("Vizardous 1.2.0");
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/symbol_information.png"))); // NOI18N
 
