@@ -112,6 +112,7 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
     private Map<Cell, Double>                   mapCellToNormFluorescenceCRIMSONValue   = new HashMap<Cell, Double>();
     private Map<Clade, Double>                  mapCladeToNormBranchLengthValue         = new HashMap<Clade, Double>();
     private Map<Clade, Number>                  mapEdgeToCladeBranchLengthValue         = new HashMap<Clade, Number>();
+    private Map<Cell, Double>                   mapCellToNothing   = new HashMap<Cell, Double>();
     private double defaultValueFluorescence = 0;
     private Map<Cell, Double> mapCellToYfpThreshold = new HashMap<Cell, Double>();
     private Map<Cell, Double> mapCellToCrimsonThreshold = new HashMap<Cell, Double>();
@@ -568,7 +569,9 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
     	
     	Map<Cell, Double> mapVertexSizeNormed = new HashMap<Cell, Double>();
     	
-        if (selectedAnalysisMode.equals("Length")) {
+    	if (selectedAnalysisMode.equals("Length")) {
+        	mapVertexSizeNormed = mapCellToNormLengthValue;
+        } else if (selectedAnalysisMode.equals("Length")) {
         	mapVertexSizeNormed = mapCellToNormLengthValue;
         } else if (selectedAnalysisMode.equals("Area")) {
         	mapVertexSizeNormed = mapCellToNormAreaValue;
@@ -576,16 +579,10 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
         	mapVertexSizeNormed = mapCellToNormFluorescenceYFPValue;
         } else if(selectedAnalysisMode.equals("CRIMSON fluorescence")) {
         	mapVertexSizeNormed = mapCellToNormFluorescenceCRIMSONValue;
-        } else if(selectedAnalysisMode.equals("Cells analysis mode") 
-                || selectedAnalysisMode.equals("Clades analysis mode") 
+        } else if(selectedAnalysisMode.equals("Cells") 
                 || selectedAnalysisMode.equals("fluorescencesRB")) {
         	mapVertexSizeNormed = mapCellToNormLengthValue;
-        } else if(selectedAnalysisMode.equals("Branch length")) {
-        	mapVertexSizeNormed = mapCellToNormLengthValue;
-//            esa = new EdgeWeightStrokeFunction(mapCladeToNormBranchLengthValue);
-//            esa.setWeighted(true);
-        }
-        else if (selectedAnalysisMode.equals("YFP threshold")) {
+        } else if (selectedAnalysisMode.equals("YFP threshold")) {
         	for(Cell cell : g3.getVertices()) {               
                 Map<String, Double> fluorescences = cell.getFluorescences();
                 // TODO Implement correctly
@@ -609,6 +606,8 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
             }
         	
         	mapVertexSizeNormed = mapCellToCrimsonThreshold;
+        } else if (selectedAnalysisMode.equals("None")) {
+        	mapVertexSizeNormed = mapCellToNothing;
         }
 
         // update the GUI
@@ -809,6 +808,7 @@ public class DrawPhyloTreeGraph extends JPanel implements Cloneable {
                 mapCellToNormFluorescenceCRIMSONValue.put(cell, normalizedFluorescenceCRIMSONValue);
             }
             
+            mapCellToNothing.put(cell, 0.5);
         }
          
         for(Clade clade : g3.getEdges()) {
