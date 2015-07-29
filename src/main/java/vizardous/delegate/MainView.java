@@ -134,7 +134,6 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         disconnectionButton = new javax.swing.JButton();
         jSeparator8 = new javax.swing.JToolBar.Separator();
         exportLineageTreeBar = new javax.swing.JButton();
-        exportChartsBar1 = new javax.swing.JButton();
         jSeparator6 = new javax.swing.JToolBar.Separator();
         zoomInTBar1 = new javax.swing.JButton();
         zoomOutTBar1 = new javax.swing.JButton();
@@ -208,16 +207,10 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         jLabel40 = new javax.swing.JLabel();
         jLabel41 = new javax.swing.JLabel();
         selectMenuHelp = new javax.swing.JPanel();
-        jLabel49 = new javax.swing.JLabel();
-        jLabel44 = new javax.swing.JLabel();
-        jLabel46 = new javax.swing.JLabel();
         jLabel43 = new javax.swing.JLabel();
         jLabel42 = new javax.swing.JLabel();
-        jLabel47 = new javax.swing.JLabel();
         jLabel48 = new javax.swing.JLabel();
         jLabel45 = new javax.swing.JLabel();
-        jLabel52 = new javax.swing.JLabel();
-        jLabel50 = new javax.swing.JLabel();
         jLabel51 = new javax.swing.JLabel();
         helpMenuHelp = new javax.swing.JPanel();
         jLabel26 = new javax.swing.JLabel();
@@ -368,18 +361,6 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
             }
         });
         jToolBar2.add(exportLineageTreeBar);
-
-        exportChartsBar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/chart-icon24x24.png"))); // NOI18N
-        exportChartsBar1.setToolTipText("Export charts");
-        exportChartsBar1.setFocusable(false);
-        exportChartsBar1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        exportChartsBar1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        exportChartsBar1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exportChartsBar1ActionPerformed(evt);
-            }
-        });
-        jToolBar2.add(exportChartsBar1);
         jToolBar2.add(jSeparator6);
 
         zoomInTBar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/zoom_in24x24.png"))); // NOI18N
@@ -411,7 +392,6 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         fitToViewBarJMenuItem.setFocusable(false);
         fitToViewBarJMenuItem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         fitToViewBarJMenuItem.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        fitToViewBarJMenuItem.setEnabled(false);
         fitToViewBarJMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fitToViewBarJMenuItemActionPerformed(evt);
@@ -1048,27 +1028,15 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
         selectMenuHelp.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Select menu"));
         selectMenuHelp.setMaximumSize(new java.awt.Dimension(1280, 1024));
 
-        jLabel49.setText("Select root cells of lineage trees in active window.");
-
-        jLabel44.setText("Select root");
-
-        jLabel46.setText("Select all");
-
         jLabel43.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel43.setText("Function");
 
         jLabel42.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel42.setText("Option:");
 
-        jLabel47.setText("Select all cells in lineage trees in active window.");
-
         jLabel48.setText("Select leafs cells of lineage trees in active window.");
 
         jLabel45.setText("Select leafs");
-
-        jLabel52.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons16x16/shapes_many_select.png"))); // NOI18N
-
-        jLabel50.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons16x16/shape_square_select.png"))); // NOI18N
 
         jLabel51.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons16x16/shapes_many_select.png"))); // NOI18N
 
@@ -1078,61 +1046,36 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
             selectMenuHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(selectMenuHelpLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(selectMenuHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(selectMenuHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(selectMenuHelpLayout.createSequentialGroup()
                         .addGroup(selectMenuHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel42, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(selectMenuHelpLayout.createSequentialGroup()
-                                .addGroup(selectMenuHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel51)
-                                    .addComponent(jLabel52))
-                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, selectMenuHelpLayout.createSequentialGroup()
-                                .addComponent(jLabel50)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel44, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(selectMenuHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel43, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel49, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(75, 75, 75))
+                                .addGap(134, 134, 134)
+                                .addComponent(jLabel43, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)))
+                        .addGap(87, 87, 87))
                     .addGroup(selectMenuHelpLayout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addGroup(selectMenuHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(selectMenuHelpLayout.createSequentialGroup()
-                                .addComponent(jLabel45, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel48, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(selectMenuHelpLayout.createSequentialGroup()
-                                .addComponent(jLabel46, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel47, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                .addContainerGap())
+                        .addComponent(jLabel51)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel45, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel48, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         selectMenuHelpLayout.setVerticalGroup(
             selectMenuHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(selectMenuHelpLayout.createSequentialGroup()
-                .addComponent(jLabel42)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel50)
-                .addGap(2, 2, 2)
-                .addComponent(jLabel51)
-                .addGap(2, 2, 2)
-                .addComponent(jLabel52))
-            .addGroup(selectMenuHelpLayout.createSequentialGroup()
-                .addComponent(jLabel43)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(selectMenuHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel44)
-                    .addComponent(jLabel49))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(selectMenuHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel45)
-                    .addComponent(jLabel48))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(selectMenuHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel46)
-                    .addComponent(jLabel47)))
+                .addGroup(selectMenuHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(selectMenuHelpLayout.createSequentialGroup()
+                        .addComponent(jLabel42)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(selectMenuHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel51)
+                            .addGroup(selectMenuHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel45)
+                                .addComponent(jLabel48))))
+                    .addComponent(jLabel43))
+                .addGap(54, 54, 54))
         );
 
         helpMenuHelp.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Help menu"));
@@ -1494,7 +1437,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
                 .addComponent(fileMenuHelp, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(selectMenuHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selectMenuHelp, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(viewtMenuHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(helpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -1502,7 +1445,7 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
                     .addComponent(viewtMenuHelp2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(10, 10, 10)
                 .addComponent(helpMenuHelp, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(160, Short.MAX_VALUE))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
 
         mainMenuTabbedPane.addTab("Help          ", new javax.swing.ImageIcon(getClass().getResource("/icons/symbol_help48x48.png")), helpPanel, "Help"); // NOI18N
@@ -2062,12 +2005,6 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
     private void helpBar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpBar1ActionPerformed
         mainMenuTabbedPane.setSelectedIndex(3);
     }//GEN-LAST:event_helpBar1ActionPerformed
-
-    private void exportChartsBar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportChartsBar1ActionPerformed
-            JOptionPane.showMessageDialog(this,
-                "This option is still being implemented",
-                "Message", JOptionPane.INFORMATION_MESSAGE, new javax.swing.ImageIcon(getClass().getResource("/icons/under_construction48x48.png")));
-    }//GEN-LAST:event_exportChartsBar1ActionPerformed
 
     private void connectMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectMenuItemActionPerformed
         connectToOMEROServer();
@@ -2798,7 +2735,6 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
     private javax.swing.JButton disconnectionButton;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JPanel exitPanel;
-    private javax.swing.JButton exportChartsBar1;
     private javax.swing.JMenuItem exportCrimsonFluorescence;
     private javax.swing.JMenu exportDiagrammsMenu;
     private javax.swing.JButton exportLineageTreeBar;
@@ -2854,16 +2790,10 @@ public class MainView extends javax.swing.JFrame implements PropertyChangeListen
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
-    private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel45;
-    private javax.swing.JLabel jLabel46;
-    private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel48;
-    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
-    private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel53;
     private javax.swing.JLabel jLabel54;
     private javax.swing.JLabel jLabel55;
