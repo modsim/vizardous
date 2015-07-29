@@ -9,24 +9,29 @@ import java.awt.event.ActionEvent;
 import javax.swing.ButtonGroup;
 
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.swing.AbstractButton;
 
 /**
- * TODO
+ * This class is responsible for activating analysis modes and querying for user
+ * input for the respective analysis modes.
+ * 
+ * TODO Store and show currently active analysis mode
+ * TODO Store parameters for active analysis mode
+ * TODO Add individual panels for the analysis modes
+ * TODO Switching from None to Cells mode acts weird on some buttons
  *
  * @author Charaf E. Azzouzi <c.azzouzi@fz-juelich.de>
- * @version 1.0
- * 
+ * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
  */
-
 public class VisualAnalysisSettingsJDialog extends javax.swing.JDialog implements ActionListener {
 
-    private ButtonGroup groupButtonMode         = new ButtonGroup();
+	private static final long serialVersionUID = 8873282570979101425L;
+	private ButtonGroup groupButtonMode         = new ButtonGroup();
     private ButtonGroup groupButtonCellsCharac  = new ButtonGroup();
-    private ButtonGroup groupButtonCladesCharac = new ButtonGroup();
     private ButtonGroup groupButtonFluorescencesTyp  = new ButtonGroup();
     String selectedSource ;
     Map<String, Double> thresholds = new HashMap<String, Double>();
@@ -60,12 +65,10 @@ public class VisualAnalysisSettingsJDialog extends javax.swing.JDialog implement
         crimsonThresholdRB = new javax.swing.JRadioButton();
         yfpThresholdValueTextField = new javax.swing.JTextField();
         crimsonThresholdValueTextField = new javax.swing.JTextField();
-        jPanel3 = new javax.swing.JPanel();
-        branchLengthRB = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         cellsAnalysisMode = new javax.swing.JRadioButton();
-        cladesAnalysisMode = new javax.swing.JRadioButton();
+        noneAnalysisMode = new javax.swing.JRadioButton();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -73,23 +76,92 @@ public class VisualAnalysisSettingsJDialog extends javax.swing.JDialog implement
         setResizable(false);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Cells analysis"));
-
+        
+        cellsAnalysisMode.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					fluorescencesRB.setEnabled(true);
+	                lengthRB.setEnabled(true);
+	                areaRB.setEnabled(true);
+	                yfpThresholdRB.setEnabled(true);
+	                crimsonThresholdRB.setEnabled(true);
+	                fluorescence1RB.setEnabled(true);
+	                fluorescence2RB.setEnabled(true);
+			    }
+			    else if (e.getStateChange() == ItemEvent.DESELECTED) {
+			    	fluorescencesRB.setEnabled(false);
+	                lengthRB.setEnabled(false);
+	                areaRB.setEnabled(false);
+	                yfpThresholdRB.setEnabled(false);
+	                crimsonThresholdRB.setEnabled(false);
+	                fluorescence1RB.setEnabled(false);
+	                fluorescence2RB.setEnabled(false);
+	                yfpThresholdValueTextField.setEnabled(false);
+	                crimsonThresholdValueTextField.setEnabled(false);
+			    }
+			}
+        });
+        
         fluorescencesRB.setSelected(true);
         fluorescencesRB.setText("Fluorescences");
+        fluorescencesRB.setEnabled(false);
 
+        fluorescencesRB.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.DESELECTED) {
+					fluorescence1RB.setSelected(false);
+		            fluorescence2RB.setSelected(false);
+		            fluorescence1RB.setEnabled(false);
+		            fluorescence2RB.setEnabled(false);
+				} else {
+					fluorescence1RB.setEnabled(true);
+		            fluorescence2RB.setEnabled(true);
+				}
+			}        	
+        });
+        
         lengthRB.setText("Length");
-
+        lengthRB.setEnabled(false);
+        
         areaRB.setText("Area");
+        areaRB.setEnabled(false);
 
         fluorescence1RB.setText("YFP fluorescence");
+        fluorescence1RB.setEnabled(false);
 
         fluorescence2RB.setText("CRIMSON fluorescence");
-
+        fluorescence2RB.setEnabled(false);
+        
         yfpThresholdRB.setText("YFP threshold");
-
+        yfpThresholdRB.setEnabled(false);
+        yfpThresholdRB.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.DESELECTED) {
+					yfpThresholdValueTextField.setEnabled(false);
+				} else {
+					yfpThresholdValueTextField.setEnabled(true);
+				}
+			}        	
+        });
+        
         crimsonThresholdRB.setText("Crimson threshold");
+        crimsonThresholdRB.setEnabled(false);
+        crimsonThresholdRB.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.DESELECTED) {
+					crimsonThresholdValueTextField.setEnabled(false);
+				} else {
+					crimsonThresholdValueTextField.setEnabled(true);
+				}
+			}        	
+        });
 
         yfpThresholdValueTextField.setText("140.0");
+        yfpThresholdValueTextField.setEnabled(false);
         yfpThresholdValueTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 yfpThresholdValueTextFieldActionPerformed(evt);
@@ -97,6 +169,7 @@ public class VisualAnalysisSettingsJDialog extends javax.swing.JDialog implement
         });
 
         crimsonThresholdValueTextField.setText("180.0");
+        crimsonThresholdValueTextField.setEnabled(false);
         crimsonThresholdValueTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 crimsonThresholdValueTextFieldActionPerformed(evt);
@@ -156,63 +229,41 @@ public class VisualAnalysisSettingsJDialog extends javax.swing.JDialog implement
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(crimsonThresholdRB)
                     .addComponent(crimsonThresholdValueTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Clades analysis"));
-        jPanel3.setPreferredSize(new java.awt.Dimension(147, 173));
-
-        branchLengthRB.setText("Branch length");
-        branchLengthRB.setEnabled(false);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(branchLengthRB)
-                .addContainerGap(29, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(branchLengthRB)
-                .addContainerGap())
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jLabel1.setText("Select cells or clades analysis mode.");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Analysis Mode"));
 
-        cellsAnalysisMode.setSelected(true);
-        cellsAnalysisMode.setText("Cells analysis mode");
+        cellsAnalysisMode.setText("Cells");
 
-        cladesAnalysisMode.setText("Clades analysis mode");
+        noneAnalysisMode.setSelected(true);
+        noneAnalysisMode.setText("None");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cellsAnalysisMode)
+                .addContainerGap()
+                .addComponent(noneAnalysisMode)
                 .addGap(18, 18, 18)
-                .addComponent(cladesAnalysisMode)
-                .addGap(87, 87, 87))
+                .addComponent(cellsAnalysisMode)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(cladesAnalysisMode)
-                    .addComponent(cellsAnalysisMode))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cellsAnalysisMode)
+                    .addComponent(noneAnalysisMode))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jButton1.setText("OK");
+        jButton1.setAlignmentX(0.5F);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -224,18 +275,16 @@ public class VisualAnalysisSettingsJDialog extends javax.swing.JDialog implement
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(215, 215, 215)
-                .addComponent(jButton1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(184, 184, 184)
+                        .addComponent(jButton1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -243,12 +292,10 @@ public class VisualAnalysisSettingsJDialog extends javax.swing.JDialog implement
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addContainerGap())
@@ -312,9 +359,7 @@ public class VisualAnalysisSettingsJDialog extends javax.swing.JDialog implement
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton areaRB;
-    private javax.swing.JRadioButton branchLengthRB;
     private javax.swing.JRadioButton cellsAnalysisMode;
-    private javax.swing.JRadioButton cladesAnalysisMode;
     private javax.swing.JRadioButton crimsonThresholdRB;
     private javax.swing.JTextField crimsonThresholdValueTextField;
     private javax.swing.JRadioButton fluorescence1RB;
@@ -324,94 +369,63 @@ public class VisualAnalysisSettingsJDialog extends javax.swing.JDialog implement
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JRadioButton lengthRB;
+    private javax.swing.JRadioButton noneAnalysisMode;
     private javax.swing.JRadioButton yfpThresholdRB;
     private javax.swing.JTextField yfpThresholdValueTextField;
     // End of variables declaration//GEN-END:variables
 
     private void init() {
         cellsAnalysisMode.addActionListener(this);
-        cladesAnalysisMode.addActionListener(this);
+        noneAnalysisMode.addActionListener(this);
         fluorescencesRB.addActionListener(this);
         lengthRB.addActionListener(this);
         areaRB.addActionListener(this);
         fluorescence1RB.addActionListener(this);
         fluorescence2RB.addActionListener(this);
-        branchLengthRB.addActionListener(this);
         yfpThresholdRB.addActionListener(this);
         crimsonThresholdRB.addActionListener(this);
         
+        groupButtonMode.add(noneAnalysisMode);
         groupButtonMode.add(cellsAnalysisMode);
-        groupButtonMode.add(cladesAnalysisMode);
         
         groupButtonCellsCharac.add(fluorescencesRB);
         groupButtonCellsCharac.add(lengthRB);
         groupButtonCellsCharac.add(areaRB);
+        groupButtonCellsCharac.add(yfpThresholdRB);
+        groupButtonCellsCharac.add(crimsonThresholdRB);
         
         groupButtonFluorescencesTyp.add(fluorescence1RB);
         groupButtonFluorescencesTyp.add(fluorescence2RB);
-        
-        groupButtonCladesCharac.add(branchLengthRB);
     }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
         AbstractButton source = (AbstractButton)ae.getSource();
         if (source == cellsAnalysisMode) {
-            // Activate the JRadioButtons
-            fluorescencesRB.setEnabled(true);
-            lengthRB.setEnabled(true);
-            areaRB.setEnabled(true);
-            branchLengthRB.setEnabled(false);
-            selectedSource = cellsAnalysisMode.getText();
-            
-        } else if (source == cladesAnalysisMode) {
-            // Activate the JRadioButtons
-            fluorescencesRB.setEnabled(false);
-            lengthRB.setEnabled(false);
-            areaRB.setEnabled(false);
-            fluorescence1RB.setEnabled(false);
-            fluorescence2RB.setEnabled(false);
-            branchLengthRB.setEnabled(true);
-            selectedSource = cladesAnalysisMode.getText();
-            
+            selectedSource = cellsAnalysisMode.getText();            
         } else if (source == lengthRB) {
-            // Activate the JRadioButtons
-            fluorescence1RB.setEnabled(false);
-            fluorescence2RB.setEnabled(false);
             selectedSource = lengthRB.getText();
-        }
-        else if (source == areaRB) {
-            // Activate the JRadioButtons
-            fluorescence1RB.setEnabled(false);
-            fluorescence2RB.setEnabled(false);
-            selectedSource = areaRB.getText();
-            
+        } else if (source == areaRB) {
+            selectedSource = areaRB.getText();           
         } else if (source == fluorescencesRB) {
-            // Activate the JRadioButtons
-            fluorescence1RB.setEnabled(true);
-            fluorescence2RB.setEnabled(true);
-            selectedSource = fluorescencesRB.getText();
-        
+            selectedSource = fluorescencesRB.getText();        
         } else if (source == fluorescence1RB) {
             selectedSource = fluorescence1RB.getText();
-
         } else if (source == fluorescence2RB) {
-            selectedSource = fluorescence2RB.getText();
-
-        } else if (source == branchLengthRB) {
-           selectedSource = branchLengthRB.getText();
-           
+            selectedSource = fluorescence2RB.getText();           
         } else if (source == yfpThresholdRB) {
         	selectedSource = yfpThresholdRB.getText();
-        	if (thresholds.get("yfp") == null) 
-                    thresholds.put("yfp", Double.valueOf(yfpThresholdValueTextField.getText()));
-                
+        	if (thresholds.get("yfp") == null) {
+        		thresholds.put("yfp", Double.valueOf(yfpThresholdValueTextField.getText()));
+        	}               
         } else if (source == crimsonThresholdRB) {
         	selectedSource = crimsonThresholdRB.getText();
-        	if (thresholds.get("crimson") == null) 
-                    thresholds.put("crimson", Double.valueOf(crimsonThresholdValueTextField.getText()));
+        	if (thresholds.get("crimson") == null) {
+        		thresholds.put("crimson", Double.valueOf(crimsonThresholdValueTextField.getText()));
+        	}
+        } else if (source == noneAnalysisMode) {
+        	selectedSource = noneAnalysisMode.getText();
         }
     }
 
