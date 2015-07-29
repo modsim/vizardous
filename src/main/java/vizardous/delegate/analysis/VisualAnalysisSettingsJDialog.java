@@ -11,28 +11,27 @@ import javax.swing.ButtonGroup;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
-import java.util.prefs.Preferences;
-
 import javax.swing.AbstractButton;
 
 /**
- * TODO
+ * This class is responsible for activating analysis modes and querying for user
+ * input for the respective analysis modes.
+ * 
+ * TODO Store and show currently active analysis mode
+ * TODO Store parameters for active analysis mode
+ * TODO Add individual panels for the analysis modes
+ * TODO Switching from None to Cells mode acts weird on some buttons
  *
  * @author Charaf E. Azzouzi <c.azzouzi@fz-juelich.de>
- * @version 1.0
- * 
+ * @author Stefan Helfrich <s.helfrich@fz-juelich.de>
  */
-
 public class VisualAnalysisSettingsJDialog extends javax.swing.JDialog implements ActionListener {
 
-    private ButtonGroup groupButtonMode         = new ButtonGroup();
+	private static final long serialVersionUID = 8873282570979101425L;
+	private ButtonGroup groupButtonMode         = new ButtonGroup();
     private ButtonGroup groupButtonCellsCharac  = new ButtonGroup();
-    private ButtonGroup groupButtonCladesCharac = new ButtonGroup();
     private ButtonGroup groupButtonFluorescencesTyp  = new ButtonGroup();
     String selectedSource ;
     Map<String, Double> thresholds = new HashMap<String, Double>();
