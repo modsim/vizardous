@@ -32,5 +32,5 @@ to the [Vizardous repository](https://github.com/modsim/vizardous).
 Citing Vizardous
 ----------------
 
-Helfrich et al., Vizardous: Interactive Analysis of Microbial Populations with Single Cell Resolution, Bioinformatics, in revision
+Helfrich, S. et al., 2015. Vizardous: Interactive Analysis of Microbial Populations with Single Cell Resolution. Bioinformatics (Oxford, England). [doi:10.1093/bioinformatics/btv468](https://dx.doi.org/10.1093/bioinformatics/btv468)
 
