@@ -19,10 +19,6 @@
             <id>imagej.public</id>
             <url>http://maven.imagej.net/content/groups/public</url>
         </repository>
-        <repository>
-            <id>central</id>
-            <url>http://repo1.maven.org/maven/</url>
-        </repository>
 		<repository>
 		    <id>jitpack.io</id>
 		    <url>https://jitpack.io</url>
