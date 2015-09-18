@@ -19,7 +19,11 @@ install:
         (new-object System.Net.WebClient).DownloadFile('http://www.us.apache.org/dist/maven/maven-3/3.2.5/binaries/apache-maven-3.2.5-bin.zip', 'C:\maven-bin.zip')
         [System.IO.Compression.ZipFile]::ExtractToDirectory("C:\maven-bin.zip", "C:\maven")
       }
-  - cmd: SET PATH=C:\maven\apache-maven-3.2.5\bin;%JAVA_HOME%\bin;%PATH:C:\Ruby193\bin;=%
+      if (!(Test-Path -Path "C:\wix" )) {
+        (new-object System.Net.WebClient).DownloadFile('https://wix.codeplex.com/downloads/get/1483378', 'C:\wix310-binaries.zip')
+        [System.IO.Compression.ZipFile]::ExtractToDirectory("C:\wix310-binaries.zip", "C:\wix")
+      }
+  - cmd: SET PATH=C:\wix;C:\maven\apache-maven-3.2.5\bin;%JAVA_HOME%\bin;%PATH:C:\Ruby193\bin;=%
   - cmd: SET MAVEN_OPTS=-XX:MaxPermSize=2g -Xmx4g
   - cmd: SET JAVA_OPTS=-XX:MaxPermSize=2g -Xmx4g
   - cmd: mvn --version
@@ -31,3 +35,4 @@ test_script:
 cache:
   - C:\maven\
   - C:\Users\appveyor\.m2
+  - C:\wix\
