@@ -1,3 +1,5 @@
+![AppVeyor status](https://ci.appveyor.com/api/projects/status/github/modsim/vizardous?branch=appveyor&svg=true)
+
 Vizardous
 =========
 
