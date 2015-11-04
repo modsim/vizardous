@@ -37,8 +37,6 @@ install:
   - ps: $Env:PATH
 build_script:
   - mvn package -B
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 cache:
   - C:\maven\
   - C:\Users\appveyor\.m2
