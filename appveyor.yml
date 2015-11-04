@@ -27,7 +27,7 @@ install:
       }
       if (!(Test-Path -Path "C:\inno" )) {
         (new-object System.Net.WebClient).DownloadFile('http://www.jrsoftware.org/download.php/is-unicode.exe', 'C:\isetup.exe')
-        Invoke-Expression 'C:\isetup.exe /DIR="C:\inno" /VERYSILENT /SP- /SUPPRESSMSGBOXES /LOG="C:\inno" /NOCANCEL /NORESTART'
+        Invoke-Expression 'C:\isetup.exe /DIR="C:\inno" /VERYSILENT /SP- /SUPPRESSMSGBOXES /LOG="C:\inno.log" /NOCANCEL /NORESTART'
       }
   - cmd: SET PATH=C:\inno;C:\wix;C:\maven\apache-maven-3.2.5\bin;%JAVA_HOME%\bin;%PATH:C:\Ruby193\bin;=%
   - cmd: SET MAVEN_OPTS=-XX:MaxPermSize=2g -Xmx4g
