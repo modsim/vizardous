@@ -36,7 +36,7 @@ install:
   - cmd: java -version
   - ps: $Env:PATH
 build_script:
-  - mvn package -B -Dmaven.test.skip=true
+  - mvn package -B
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 cache:
@@ -50,9 +50,6 @@ cache:
 
 # Define build artifacts
 artifacts:
-#  - path: target\jfx\native\vizardous-1.2.1-SNAPSHOT-1.0.exe
-#    name: exe-installer
-#
   - path: target\jfx\native\*.msi
     name: msi-installer
   - path: target\jfx\native\*.exe
