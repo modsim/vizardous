@@ -23,7 +23,11 @@ install:
         (new-object System.Net.WebClient).DownloadFile('http://wixtoolset.org/downloads/v3.10.0.2103/wix310-binaries.zip', 'C:\wix310-binaries.zip')
         [System.IO.Compression.ZipFile]::ExtractToDirectory("C:\wix310-binaries.zip", "C:\wix")
       }
-  - cmd: SET PATH=C:\wix;C:\maven\apache-maven-3.2.5\bin;%JAVA_HOME%\bin;%PATH:C:\Ruby193\bin;=%
+      if (!(Test-Path -Path "C:\inno" )) {
+        (new-object System.Net.WebClient).DownloadFile('http://www.jrsoftware.org/download.php/is-unicode.exe', 'C:\isetup.exe')
+        Invoke-Expression 'C:\isetup.exe /DIR="C:\inno" /VERYSILENT /SP- /SUPPRESSMSGBOXES /LOG="C:\inno" /NOCANCEL /NORESTART'
+      }
+  - cmd: SET PATH=C:\inno;C:\wix;C:\maven\apache-maven-3.2.5\bin;%JAVA_HOME%\bin;%PATH:C:\Ruby193\bin;=%
   - cmd: SET MAVEN_OPTS=-XX:MaxPermSize=2g -Xmx4g
   - cmd: SET JAVA_OPTS=-XX:MaxPermSize=2g -Xmx4g
   - cmd: mvn --version
@@ -34,7 +38,7 @@ cache:
   - C:\maven\
   - C:\Users\appveyor\.m2
   - C:\wix\
-
+  - C:\inno\
 # Push artifacts from script
 #after_build:
 #  - ps: Get-ChildItem .\*.nupkg | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
