@@ -207,7 +207,7 @@
             <plugin>
 			    <groupId>com.zenjava</groupId>
 			    <artifactId>javafx-maven-plugin</artifactId>
-			    <version>8.1.4</version>
+			    <version>8.1.5</version>
 			    <configuration>
 			        <vendor>Forschungszentrum Jülich GmbH</vendor>
 			        <mainClass>vizardous.Vizardous</mainClass>
