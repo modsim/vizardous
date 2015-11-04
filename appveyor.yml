@@ -32,6 +32,8 @@ install:
   - cmd: SET JAVA_OPTS=-XX:MaxPermSize=2g -Xmx4g
   - cmd: mvn --version
   - cmd: java -version
+  - ps: ISCC.exe /?
+  - ps: $Env:PATH
 build_script:
   - mvn package -B -Dmaven.test.skip=true
 cache:
