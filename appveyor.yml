@@ -42,9 +42,6 @@ cache:
   - C:\Users\appveyor\.m2
   - C:\wix\
   - C:\inno\
-# Push artifacts from script
-#after_build:
-#  - ps: Get-ChildItem .\*.nupkg | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
 
 # Define build artifacts
 artifacts:
