@@ -1,5 +1,4 @@
 version: '{build}'
-skip_tags: false
 clone_depth: 10
 environment:
   matrix:
