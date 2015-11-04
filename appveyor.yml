@@ -36,7 +36,7 @@ install:
   - cmd: java -version
   - ps: $Env:PATH
 build_script:
-  - ps: mvn package -B -Dmaven.test.skip=true
+  - mvn package -B -Dmaven.test.skip=true
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 cache:
