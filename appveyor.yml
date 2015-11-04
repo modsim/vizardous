@@ -35,8 +35,6 @@ install:
   - cmd: mvn --version
   - cmd: java -version
   - ps: $Env:PATH
-  - ps: iscc /?
-  - ps: candle /?
 build_script:
   - ps: mvn package -B -Dmaven.test.skip=true
 on_finish:
