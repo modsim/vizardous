@@ -20,7 +20,7 @@ set -euv
 /usr/libexec/java_home -V
 
 # Prep brew itself
-brew update
+brew updatebrew update >/dev/null
 brew tap caskroom/cask
 brew install caskroom/cask/brew-cask
 brew outdated caskroom/cask/brew-cask || brew upgrade caskroom/cask/brew-cask
@@ -28,7 +28,7 @@ brew outdated caskroom/cask/brew-cask || brew upgrade caskroom/cask/brew-cask
 # We must be able to get older Java versions than the latest.
 brew tap caskroom/versions
 sudo rm -rf /Library/Java/JavaVirtualMachines
-brew cask install caskroom/versions/java
+brew cask install java
 
 # Fail unless we installed JDK 8 correctly.
 /usr/libexec/java_home --failfast --version 1.8
