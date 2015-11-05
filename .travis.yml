@@ -8,6 +8,7 @@ before_install:
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ./install-osx-jdk8.sh; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then jdk_switcher use oraclejdk8; fi
 
+# Skip additional mvn install execution
 install: true
 
 script: mvn package -B
