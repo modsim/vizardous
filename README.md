@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/modsim/vizardous.svg?branch=travis)](https://travis-ci.org/modsim/vizardous)
+
 Vizardous
 =========
 
