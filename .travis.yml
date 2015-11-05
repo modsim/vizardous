@@ -26,6 +26,9 @@ deploy:
   skip_cleanup: true
   file_glob: true
   draft: true
+  name: Vizardous $(TRAVIS_TAG)
+  tag_name: $(TRAVIS_TAG)
+  body: 'Preliminary description - CHANGE ME'
   api_key:
     secure: EEFomsmiaX7oa0ldoKZA6IOhwr7/b7tvsAwQP/d/YgInP82oER6lv0sW9GhDujq5I1v4QkWhnezHIhtUOBueVjLYYerHFWufo7vU69GGkbihrfIdQGpoVlzPJC8IJ+pFF8yz60twppSU3gl8chZ2T39FBNLGG5pS2e6HIOoi0FycoCCdwgNu/ZC2lqymq/V7hlr52eoQ84Xdj3e262VTus400X+gJ23fqCwGb1sjJHA3pPvRie2jbcFP7xEPQ9hDLDtW37W4BcuuVoLoRBYaJ+WoiBflJyvUY7TNn3GieBNB4uPScgSCDvVbgBynw7s6k1zssxFX3Jse4cwbBmLYYg55BMadUVtabdF7w5S1GjnN1siycN0lc5gamCvDa2jm3rjrG2fvJJRctZIZnpYPAuIv5u3QWUurnINM7SqZ3+oWoqM2NlPdN+1IHdXLYQPzBybOchRDBtfWvOsYohcIDnJFgM68taLvf0AM6eGJJyF7maAg9goja/WLNSndh+PZAo+g3/sMWmbfZEJUPiY5ZCjjZ3pGHXI2af1RZ9pOTriSOCDNPnMBxTQyWQuJY1P7/A968xVj6wGu8u4jK8J6dVejujKejvQcwA+s6iePjqGZm7fE6WcdndVi+XCcfRLxxBB4Cktn59vV3j1/DKS46/2gq/CPH9cO/iKz9DsrT94=
   file: target/jfx/native/vizardous-*.{dmg,deb,rpm}
