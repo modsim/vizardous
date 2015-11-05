@@ -1,7 +1,12 @@
 language: java
 
-jdk:
-  - oraclejdk8
+before_install:
+  # Don't spew graphic art.
+  - export TERM=dumb
+  - env
+  # Travis doesn't let us select the JDK version on OS X.  Force it ourselves.
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ./install-osx-jdk8.sh; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then jdk_switcher use oraclejdk8; fi
 
 script: mvn package -B
 
