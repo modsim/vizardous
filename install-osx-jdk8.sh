@@ -20,7 +20,7 @@ set -euv
 /usr/libexec/java_home -V
 
 # Prep brew itself
-brew updatebrew update >/dev/null
+brew update >/dev/null
 brew tap caskroom/cask
 brew install caskroom/cask/brew-cask
 brew outdated caskroom/cask/brew-cask || brew upgrade caskroom/cask/brew-cask
