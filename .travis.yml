@@ -33,3 +33,5 @@ deploy:
 branches:
   only:
   - travis
+  - /v\d\.\d\.\d/
+  - /vX\.Y\.\d/
