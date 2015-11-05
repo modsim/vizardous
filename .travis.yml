@@ -33,11 +33,9 @@ deploy:
   file: target/jfx/native/vizardous-*.{dmg,deb,rpm}
   on:
     repo: modsim/vizardous
-    branch: travis
     tags: true
 
 branches:
   only:
-  - travis
   - /v\d\.\d\.\d/
   - /vX\.Y\.\d/
