@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/modsim/vizardous.svg?branch=travis)](https://travis-ci.org/modsim/vizardous)
+[![Travis status](https://travis-ci.org/modsim/vizardous.svg?branch=travis)](https://travis-ci.org/modsim/vizardous) [![AppVeyor status](https://ci.appveyor.com/api/projects/status/github/modsim/vizardous?branch=appveyor&svg=true)](https://ci.appveyor.com/project/stelfrich/vizardous)
 
 Vizardous
 =========

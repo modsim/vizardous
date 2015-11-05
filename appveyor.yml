@@ -1,0 +1,76 @@
+version: '{build}'
+clone_depth: 10
+environment:
+  matrix:
+    #- JAVA_HOME: C:\Program Files\Java\jdk1.7.0
+    - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
+branches:
+  only:
+    - /v\d\.\d\.\d/
+    - /vX\.Y\.\d/
+
+os: Windows Server 2012
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+install:
+  - ps: |
+      Add-Type -AssemblyName System.IO.Compression.FileSystem
+      if (!(Test-Path -Path "C:\maven" )) {
+        (new-object System.Net.WebClient).DownloadFile('http://www.us.apache.org/dist/maven/maven-3/3.2.5/binaries/apache-maven-3.2.5-bin.zip', 'C:\maven-bin.zip')
+        [System.IO.Compression.ZipFile]::ExtractToDirectory("C:\maven-bin.zip", "C:\maven")
+      }
+      if (!(Test-Path -Path "C:\wix" )) {
+        (new-object System.Net.WebClient).DownloadFile('http://wixtoolset.org/downloads/v3.10.0.2103/wix310-binaries.zip', 'C:\wix310-binaries.zip')
+        [System.IO.Compression.ZipFile]::ExtractToDirectory("C:\wix310-binaries.zip", "C:\wix")
+      }
+      if (!(Test-Path -Path "C:\inno" )) {
+        (new-object System.Net.WebClient).DownloadFile('http://www.jrsoftware.org/download.php/is-unicode.exe', 'C:\isetup.exe')
+        Invoke-Expression 'C:\isetup.exe /DIR="C:\inno" /VERYSILENT /SP- /SUPPRESSMSGBOXES /LOG="C:\inno.log" /NOCANCEL /NORESTART'
+      }
+  - cmd: SET PATH=C:\inno;C:\wix;C:\maven\apache-maven-3.2.5\bin;%JAVA_HOME%\bin;%PATH:C:\Ruby193\bin;=%
+  - cmd: SET MAVEN_OPTS=-XX:MaxPermSize=2g -Xmx4g
+  - cmd: SET JAVA_OPTS=-XX:MaxPermSize=2g -Xmx4g
+  - cmd: mvn --version
+  - cmd: java -version
+  - ps: $Env:PATH
+build_script:
+  - mvn package -B
+cache:
+  - C:\maven\
+  - C:\Users\appveyor\.m2
+  - C:\wix\
+  - C:\inno\
+
+# Define build artifacts
+artifacts:
+  - path: target\jfx\native\*.msi
+    name: msi-installer
+  - path: target\jfx\native\*.exe
+    name: exe-installer
+  - path: target\vizardous-*.jar
+    name: thin-jar
+
+# Enable e-mail notifications
+notifications:
+  - provider: Email
+    to:
+      - s.helfrich@fz-juelich.de
+      - j.seiffarth@fz-juelich.de
+    on_build_success: true
+    on_build_failure: true
+    on_build_status_changed: true
+
+# Deploy artifacts to GitHub release
+deploy:
+  release: Vizardous $(appveyor_repo_tag_name)
+  tag: $(appveyor_repo_tag_name)
+  description: 'Preliminary description - CHANGE ME'
+  provider: GitHub
+  auth_token:
+    secure: A+ILhZK6GK7cof1apdvfec0LtDoKylfFA6pV6rroB3a6p5P+RGZpv2Y75k1i8JsW
+  artifact: thin-jar, msi-installer, exe-installer
+  draft: true
+  prerelease: false
+  on:
+    appveyor_repo_tag: true        # deploy on tag push only
