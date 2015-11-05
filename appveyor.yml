@@ -6,12 +6,9 @@ environment:
     - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
 branches:
   only:
-    - appveyor
     - /v\d\.\d\.\d/
     - /vX\.Y\.\d/
-  except:
-    - master
-    - develop
+
 os: Windows Server 2012
 init:
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
@@ -72,7 +69,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: A+ILhZK6GK7cof1apdvfec0LtDoKylfFA6pV6rroB3a6p5P+RGZpv2Y75k1i8JsW
-  artifact: thin-jar
+  artifact: thin-jar, msi-installer, exe-installer
   draft: true
   prerelease: false
   on:
