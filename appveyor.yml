@@ -8,6 +8,7 @@ branches:
   only:
     - appveyor
     - /v\d\.\d\.\d/
+    - /vX\.Y\.\d/
   except:
     - master
     - develop
@@ -65,8 +66,9 @@ notifications:
 
 # Deploy artifacts to GitHub release
 deploy:
-  release: Vizardous $(appveyor_repo_tag)
-  description: 'Release description'
+  release: Vizardous $(appveyor_repo_tag_name)
+  tag: $(appveyor_repo_tag_name)
+  description: 'Preliminary description - CHANGE ME'
   provider: GitHub
   auth_token:
     secure: A+ILhZK6GK7cof1apdvfec0LtDoKylfFA6pV6rroB3a6p5P+RGZpv2Y75k1i8JsW
